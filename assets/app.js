@@ -81,3 +81,44 @@
 
   setStage(0);
 })();
+
+/* ---------- 冲突解决模拟器 ---------- */
+(function initConflictSim() {
+  const sim = document.getElementById('conflict-sim');
+  if (!sim) return;
+
+  const result = document.getElementById('sim-result');
+  const resolved = document.getElementById('sim-resolved');
+  const note = document.getElementById('sim-note');
+  const buttons = sim.querySelectorAll('.sim-choices button');
+
+  const outcomes = {
+    ours: {
+      code: 'const timeout = 3000;',
+      note: '你裁决：维持主线的值。你的分支这次改动在这一处被放弃——这完全合法，冲突解决本来就允许「不采用自己的版本」。',
+    },
+    theirs: {
+      code: 'const timeout = 5000;',
+      note: '你裁决：采用自己的值。注意主线那边的 3000 被覆盖了——如果那是别人有意的改动，最好在 PR 里说一声为什么。',
+    },
+    both: {
+      code: 'const timeout = 4000;',
+      note: '你裁决：两个版本都不要，另写一个。这也是常见解法——冲突解决不是二选一，而是「编辑成最终想要的样子」。',
+    },
+  };
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const o = outcomes[btn.dataset.choice];
+      buttons.forEach((b) => b.classList.toggle('chosen', b === btn));
+      resolved.textContent = o.code;
+      note.textContent = o.note;
+      result.hidden = false;
+    });
+  });
+
+  document.getElementById('sim-reset').addEventListener('click', () => {
+    result.hidden = true;
+    buttons.forEach((b) => b.classList.remove('chosen'));
+  });
+})();

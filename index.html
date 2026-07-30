@@ -402,6 +402,25 @@ git push                        <span class="comment"># 绑定之后，以后直
 <span class="marker">&gt;&gt;&gt;&gt;&gt;&gt;&gt; feat/login</span></code></pre></div>
             <p>上半截（<code>HEAD</code> 之后）是主线的版本，下半截是你的版本。<strong>解决冲突 = 手动把这段编辑成最终想要的样子</strong>（可能选上面、可能选下面、也可能两个都不要另写一个），把那三行标记删干净，然后 <code>git add</code> + <code>git commit</code>。</p>
             <p>没有任何魔法，就是人工做决定。Git 从来不敢替你猜——因为它不懂业务，5000 还是 3000 只有你知道。</p>
+
+            <div class="conflict-sim" id="conflict-sim">
+              <p class="sim-title">动手试一次：你来做这个决定</p>
+              <p class="sim-desc">假设需求是「弱网环境下超时时间要放宽」。主线上是 3000，你的分支改成了 5000。选一种解法：</p>
+              <div class="sim-choices">
+                <button type="button" data-choice="ours">保留主线的 3000</button>
+                <button type="button" data-choice="theirs">保留我的 5000</button>
+                <button type="button" data-choice="both">都不要，折中 4000</button>
+              </div>
+              <div class="sim-result" id="sim-result" hidden>
+                <p class="sim-result-label">解决后的文件（标记已删干净）：</p>
+                <div class="cmd"><pre><code id="sim-resolved"></code></pre></div>
+                <p class="sim-note" id="sim-note"></p>
+                <p class="sim-result-label">然后告诉 Git「这处冲突我已经裁决完了」：</p>
+                <div class="cmd"><pre><code>git add .
+git commit</code></pre></div>
+                <button type="button" class="sim-reset" id="sim-reset">↺ 重新选一次</button>
+              </div>
+            </div>
           </div>
         </details>
 

@@ -507,6 +507,45 @@ details.deep-dive summary::-webkit-details-marker { display: none; }
 .conflict-sample .ours { background: var(--accent-soft); display: inline-block; width: 100%; }
 .conflict-sample .theirs { background: var(--purple); background: #fbefff; display: inline-block; width: 100%; }
 
+/* ---------- 冲突解决模拟器 ---------- */
+.conflict-sim {
+  margin-top: 1.2rem;
+  padding: 1rem 1.1rem;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  background: var(--bg-subtle);
+}
+
+.sim-title { font-weight: 650; margin: 0 0 .3rem; }
+.sim-desc { font-size: .9rem; color: var(--ink-secondary); margin: 0 0 .8rem; }
+
+.sim-choices { display: flex; gap: .6rem; flex-wrap: wrap; }
+
+.sim-choices button, .sim-reset {
+  padding: .45rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: .88rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.sim-choices button:hover, .sim-reset:hover { border-color: var(--accent); color: var(--accent); }
+
+.sim-choices button.chosen {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 650;
+}
+
+.sim-result { margin-top: 1rem; }
+.sim-result-label { font-size: .85rem; font-weight: 650; margin: .8rem 0 .3rem; }
+.sim-note { font-size: .88rem; color: var(--ink-secondary); margin: .5rem 0; }
+.sim-reset { margin-top: .5rem; }
+
 /* ---------- 响应式：窄屏收起侧边栏 ---------- */
 @media (max-width: 960px) {
   .progress-nav { display: none; }
