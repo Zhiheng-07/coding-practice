@@ -32,11 +32,58 @@
     <section id="hero" class="section section-hero">
       <h1>Git 标准开发流程</h1>
       <p class="hero-subtitle">一次需求的完整旅程 · 面向要亲自动手的产品经理</p>
+
+      <p>你不需要成为 Git 专家，但如果要按真实团队的标准范式做开发任务，就必须知道一次改动从「开始动手」到「进入正式版本」要经过哪些环节、每个环节在哪里发生、别人什么时候能看见你。这个网站把整个流程按发生顺序讲一遍——所有专业术语都保留英文原文，并且都有解释。</p>
+
+      <div class="callout callout-analogy">
+        <span class="callout-title">贯穿全篇的核心类比</span>
+        <p><strong>一群人合写一本书。</strong>云端有一份「总稿」，每个人电脑里有一份「自己的抄本」，改完再送回去合到总稿里。所有 Git 操作，本质上都是抄本和总稿之间的搬运动作。</p>
+      </div>
+
+      <p>对产品经理来说，这套流程还有一层直接价值：<strong>PR 页面是你的观察窗口</strong>——每个需求做到哪一步、卡在人工评审还是自动化测试，都能在上面直接看到；而「需求要拆小」这条产品常识，在这套流程里有一个工程学的对应物：<strong>分支要短命</strong>。看完主线部分你会明白这两者为什么是同一件事。</p>
     </section>
 
     <!-- 全景地图：三层模型 + 四个基础动作 -->
     <section id="map" class="section">
       <h2>全景地图</h2>
+
+      <p>进入流程之前，先建立坐标系。你的困惑大多来自把 Git 的<strong>三个层次</strong>当成了一层：</p>
+
+      <div class="layer-model" aria-label="Git 三层模型">
+        <div class="layer-box layer-remote">
+          <span class="layer-name">远程仓库</span>
+          <span class="layer-desc"> —— GitHub 上的那一份，团队共享的「总稿」</span>
+        </div>
+        <div class="layer-arrows"><span class="down">pull 拉取</span><span class="up">push 推送</span></div>
+        <div class="layer-box layer-repo">
+          <span class="layer-name">本地仓库</span>
+          <span class="layer-desc"> —— 你电脑里的 .git 目录，存着完整历史</span>
+        </div>
+        <div class="layer-arrows"><span class="down">checkout 检出</span><span class="up">commit 提交</span></div>
+        <div class="layer-box layer-work">
+          <span class="layer-name">工作目录</span>
+          <span class="layer-desc"> —— 你能打开、编辑的那些文件</span>
+        </div>
+      </div>
+
+      <p>在这三层之间搬运内容的，是四个基础动作：</p>
+
+      <table>
+        <thead>
+          <tr><th>动作</th><th>方向</th><th>类比</th><th>什么时候做</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>拉取 pull</strong></td><td>云端 → 本地</td><td>把总稿最新版抄回自己桌上</td><td>每天开工第一件事</td></tr>
+          <tr><td><strong>提交 commit</strong></td><td>工作区 → 本地仓库</td><td>在自己抄本上盖章存档，写一句「我改了第三章」</td><td>改完一个完整的小功能</td></tr>
+          <tr><td><strong>推送 push</strong></td><td>本地 → 云端</td><td>把盖过章的改动送回总稿</td><td>攒了一个或几个 commit 之后</td></tr>
+          <tr><td><strong>合并 merge</strong></td><td>支线 → 主线</td><td>把你写的支线内容缝进主线</td><td>功能做完，要并回主分支时</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout callout-key">
+        <span class="callout-title">全流程最关键的一条分界线</span>
+        <p>commit 只动你自己的电脑，别人看不见；<strong>push 之后才是团队可见</strong>。所以 commit 可以很频繁，push 可以攒着。下面主线里每一步都标了「团队可见性」，就是在追踪这条线。</p>
+      </div>
     </section>
 
     <!-- 主线：七步流程，每步一个 step-card -->
