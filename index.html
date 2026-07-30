@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git 标准开发流程 · 一次需求的完整旅程</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+  <!-- 侧边流程进度条：滚动到哪一步，高亮哪一步 -->
+  <nav class="progress-nav" id="progress-nav" aria-label="页面导航">
+    <a href="#hero" class="nav-item" data-section="hero">开篇</a>
+    <a href="#map" class="nav-item" data-section="map">全景地图</a>
+    <div class="nav-group-label">一次需求的旅程</div>
+    <a href="#step-1" class="nav-item nav-step" data-section="step-1"><span class="nav-num">1</span>同步主分支</a>
+    <a href="#step-2" class="nav-item nav-step" data-section="step-2"><span class="nav-num">2</span>新建分支</a>
+    <a href="#step-3" class="nav-item nav-step" data-section="step-3"><span class="nav-num">3</span>本地开发</a>
+    <a href="#step-3-5" class="nav-item nav-step" data-section="step-3-5"><span class="nav-num">3.5</span>合入主线</a>
+    <a href="#step-4" class="nav-item nav-step" data-section="step-4"><span class="nav-num">4</span>推送分支</a>
+    <a href="#step-5" class="nav-item nav-step" data-section="step-5"><span class="nav-num">5</span>提交评审</a>
+    <a href="#step-6" class="nav-item nav-step" data-section="step-6"><span class="nav-num">6</span>合并主线</a>
+    <a href="#step-7" class="nav-item nav-step" data-section="step-7"><span class="nav-num">7</span>收尾</a>
+    <a href="#misconceptions" class="nav-item" data-section="misconceptions">误区对照</a>
+    <a href="#quiz" class="nav-item" data-section="quiz">自测</a>
+    <a href="#reference" class="nav-item" data-section="reference">速查表</a>
+  </nav>
+
+  <main class="content">
+
+    <!-- 开篇：为什么 PM 要懂这套流程 + 核心类比 -->
+    <section id="hero" class="section section-hero">
+      <h1>Git 标准开发流程</h1>
+      <p class="hero-subtitle">一次需求的完整旅程 · 面向要亲自动手的产品经理</p>
+    </section>
+
+    <!-- 全景地图：三层模型 + 四个基础动作 -->
+    <section id="map" class="section">
+      <h2>全景地图</h2>
+    </section>
+
+    <!-- 主线：七步流程，每步一个 step-card -->
+    <section id="journey" class="section">
+      <h2>一次需求的完整旅程</h2>
+      <article id="step-1" class="step-card"></article>
+      <article id="step-2" class="step-card"></article>
+      <article id="step-3" class="step-card"></article>
+      <article id="step-3-5" class="step-card step-card-sub"></article>
+      <article id="step-4" class="step-card"></article>
+      <article id="step-5" class="step-card"></article>
+      <article id="step-6" class="step-card"></article>
+      <article id="step-7" class="step-card"></article>
+    </section>
+
+    <!-- 误区对照卡：常见的理解 vs 实际 -->
+    <section id="misconceptions" class="section">
+      <h2>误区对照</h2>
+    </section>
+
+    <!-- 自测：判断题 -->
+    <section id="quiz" class="section">
+      <h2>自测一下</h2>
+    </section>
+
+    <!-- 页尾速查：命令清单 + 名词对照 -->
+    <section id="reference" class="section">
+      <h2>速查表</h2>
+    </section>
+
+    <footer class="site-footer">
+      <p>内容整理自真实的 Git 学习问答记录 · 本站本身也是按「分支 → commit → PR → 合并」的标准流程开发的</p>
+    </footer>
+
+  </main>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

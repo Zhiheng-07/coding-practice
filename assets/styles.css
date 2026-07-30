@@ -1,0 +1,175 @@
+/* ============================================================
+   Git 标准开发流程教学站 · 样式系统
+   简洁文档风：白底、大留白、排版层级优先
+   ============================================================ */
+
+/* ---------- 设计变量 ---------- */
+:root {
+  --ink: #1f2328;            /* 正文 */
+  --ink-secondary: #59636e;  /* 次要文字 */
+  --accent: #0969da;         /* 强调蓝 */
+  --accent-soft: #ddf4ff;    /* 强调蓝底色 */
+  --green: #1a7f37;          /* 云端可见 / 成功 */
+  --green-soft: #dafbe1;
+  --orange: #9a6700;         /* 警示 / 误区 */
+  --orange-soft: #fff8c5;
+  --red: #cf222e;            /* 危险 */
+  --red-soft: #ffebe9;
+  --purple: #8250df;         /* 分支色 */
+  --border: #d0d7de;
+  --bg-subtle: #f6f8fa;
+  --bg: #ffffff;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+          "Microsoft YaHei", "Segoe UI", sans-serif;
+  --nav-width: 232px;
+}
+
+/* ---------- 基础 ---------- */
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { line-height: 1.4; font-weight: 650; }
+h1 { font-size: 2.3rem; letter-spacing: .01em; margin: 0 0 .5rem; }
+h2 { font-size: 1.65rem; margin: 0 0 1.2rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
+h3 { font-size: 1.25rem; margin: 2rem 0 .8rem; }
+h4 { font-size: 1.05rem; margin: 1.5rem 0 .6rem; }
+
+p { margin: .8em 0; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+strong { font-weight: 650; }
+
+code {
+  font-family: var(--mono);
+  font-size: .88em;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: .1em .35em;
+  white-space: nowrap;
+}
+
+/* ---------- 布局：左侧进度条 + 右侧内容 ---------- */
+.content {
+  margin-left: var(--nav-width);
+  max-width: 780px;
+  padding: 0 48px 80px;
+}
+
+.section { padding-top: 72px; }
+
+/* ---------- 侧边流程进度条 ---------- */
+.progress-nav {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--nav-width);
+  padding: 32px 12px 32px 20px;
+  border-right: 1px solid var(--border);
+  background: var(--bg);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: .86rem;
+  color: var(--ink-secondary);
+  border-left: 2px solid transparent;
+}
+
+.nav-item:hover { background: var(--bg-subtle); text-decoration: none; }
+
+.nav-item.active {
+  color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+.nav-group-label {
+  margin: 14px 0 4px;
+  padding: 0 10px;
+  font-size: .72rem;
+  font-weight: 650;
+  letter-spacing: .08em;
+  color: var(--ink-secondary);
+  text-transform: uppercase;
+}
+
+.nav-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 4px;
+  border-radius: 11px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  font-size: .72rem;
+  font-weight: 650;
+  font-family: var(--mono);
+}
+
+.nav-item.active .nav-num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ---------- 开篇 ---------- */
+.section-hero { padding-top: 96px; }
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--ink-secondary);
+  margin-top: 0;
+}
+
+/* ---------- 主线步骤卡片 ---------- */
+.step-card {
+  margin: 2.5rem 0;
+  padding: 1.8rem 2rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  scroll-margin-top: 24px;
+}
+
+.step-card-sub {
+  margin-left: 2rem;
+  background: var(--bg-subtle);
+}
+
+/* ---------- 页脚 ---------- */
+.site-footer {
+  margin-top: 96px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: .88rem;
+  color: var(--ink-secondary);
+}
+
+/* ---------- 响应式：窄屏收起侧边栏 ---------- */
+@media (max-width: 960px) {
+  .progress-nav { display: none; }
+  .content { margin-left: 0; padding: 0 20px 60px; }
+}
