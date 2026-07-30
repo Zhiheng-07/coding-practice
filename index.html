@@ -427,6 +427,68 @@ git branch -d feat/login <span class="comment"># ④ 删掉本地分支</span></
     <!-- 误区对照卡：常见的理解 vs 实际 -->
     <section id="misconceptions" class="section">
       <h2>误区对照</h2>
+
+      <p>下面四张卡片，左边是学习过程中一次真实复述里出现的理解（保留原话），右边是校正后的版本。这几处偏差非常典型——第一遍学 Git 的人几乎都会这么想。</p>
+
+      <div class="miscon-card">
+        <div class="miscon-head">① pull 拉下来的是什么？</div>
+        <div class="miscon-grid">
+          <div class="miscon-then">
+            <span class="miscon-label">当时的理解</span>
+            <blockquote>每个人每次开发就需要从云端仓库获取这个最新的文件……它是专人维护的确认版文件。</blockquote>
+          </div>
+          <div class="miscon-fact">
+            <span class="miscon-label">实际</span>
+            <p>拉下来的不是「一份最新文件」，而是<strong>整个仓库的完整历史</strong>——每一次 commit、每一条分支都在你本地。所以 Git 叫「分布式」，断网也能查三个月前的改动。</p>
+            <p>而且主分支不是专人手工维护的，是靠流程（PR + review + CI）保证的——<strong>没有人有权限直接往主分支上写</strong>。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="miscon-card">
+        <div class="miscon-head">② 开分支是为了什么？</div>
+        <div class="miscon-grid">
+          <div class="miscon-then">
+            <span class="miscon-label">当时的理解</span>
+            <blockquote>开一个分支进行开发，目的是为了犯错时兜底，其次也可以用 worktree 或者 Fork。</blockquote>
+          </div>
+          <div class="miscon-fact">
+            <span class="miscon-label">实际</span>
+            <p>「兜底」只是副产品，主要目的是<strong>隔离</strong>：五个人同时改同一个仓库，互不干扰。</p>
+            <p>另外 branch / worktree / fork 不是三个可替换的选项，是<strong>三个层级</strong>的东西：fork 在仓库层、branch 在历史层、worktree 在工作目录层。团队日常 99% 只用 branch。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="miscon-card">
+        <div class="miscon-head">③ Git 负责准备开发环境吗？</div>
+        <div class="miscon-grid">
+          <div class="miscon-then">
+            <span class="miscon-label">当时的理解</span>
+            <blockquote>当 Git 把文件初始化，基础环境准备好，就进入了开发环节，提交就是为了同步 Git 记录存档，方便回滚。</blockquote>
+          </div>
+          <div class="miscon-fact">
+            <span class="miscon-label">实际</span>
+            <p>Git <strong>不负责</strong>准备开发环境——装依赖、起服务、连数据库是另一套事。Git 只管记录文件的变化历史。</p>
+            <p>commit 的价值也不止回滚：它是 review 的最小单元、排查 bug 时二分定位的锚点、也是记录「<strong>为什么这么改</strong>」的地方。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="miscon-card">
+        <div class="miscon-head">④ push 之前需要先合并吗？</div>
+        <div class="miscon-grid">
+          <div class="miscon-then">
+            <span class="miscon-label">当时的理解</span>
+            <blockquote>当开发完毕，就需要把本地的分支进行合并，整理好基础的文档，然后推送到云端仓库，申请合并代码。</blockquote>
+          </div>
+          <div class="miscon-fact">
+            <span class="miscon-label">实际</span>
+            <p>push 之前<strong>不需要合并本地分支</strong>。你本地就是一条分支上的一串 commit，push 就是把这串 commit 原样传到云端。</p>
+            <p>如果「整理」指的是把零碎 commit 压成整齐的几条，那个动作叫 <strong>rebase / squash</strong>，跟 merge 是两回事。</p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- 自测：判断题 -->
