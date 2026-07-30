@@ -546,6 +546,32 @@ details.deep-dive summary::-webkit-details-marker { display: none; }
 .sim-note { font-size: .88rem; color: var(--ink-secondary); margin: .5rem 0; }
 .sim-reset { margin-top: .5rem; }
 
+/* ---------- 合并策略切换器 ---------- */
+.strategy-tabs { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .6rem; }
+
+.strategy-tabs button {
+  padding: .4rem .85rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  font-family: var(--mono);
+  font-size: .83rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.strategy-tabs button:hover { border-color: var(--accent); color: var(--accent); }
+
+.strategy-tabs button.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 650;
+}
+
+.strategy-switcher .history-shape { margin: .5rem 0; min-height: 4.5em; }
+.strategy-note { font-size: .9rem; color: var(--ink-secondary); margin: .5rem 0 0; }
+
 /* ---------- 响应式：窄屏收起侧边栏 ---------- */
 @media (max-width: 960px) {
   .progress-nav { display: none; }

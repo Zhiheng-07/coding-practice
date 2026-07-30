@@ -427,13 +427,16 @@ git commit</code></pre></div>
         <details class="deep-dive">
           <summary>深入：合并按钮上的三个选项</summary>
           <div class="deep-dive-body">
-            <p>GitHub / GitLab 的合并按钮通常有三个选项，区别只在于<strong>合并后主线的历史长什么样</strong>：</p>
-            <div class="history-shape">Merge commit        ○──○─────╮────●──○
-                        ╰──○──○──╯
-
-Squash and merge    ○──○────●────○
-
-Rebase and merge    ○──○──●──●──○</div>
+            <p>GitHub / GitLab 的合并按钮通常有三个选项，区别只在于<strong>合并后主线的历史长什么样</strong>。点击切换对比：</p>
+            <div class="strategy-switcher" id="strategy-switcher">
+              <div class="strategy-tabs">
+                <button type="button" data-strategy="merge" class="active">Merge commit</button>
+                <button type="button" data-strategy="squash">Squash and merge</button>
+                <button type="button" data-strategy="rebase">Rebase and merge</button>
+              </div>
+              <div class="history-shape" id="strategy-shape"></div>
+              <p class="strategy-note" id="strategy-note"></p>
+            </div>
             <table>
               <thead><tr><th>策略</th><th>主线上留下什么</th><th>什么时候用</th></tr></thead>
               <tbody>

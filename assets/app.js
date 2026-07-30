@@ -122,3 +122,37 @@
     buttons.forEach((b) => b.classList.remove('chosen'));
   });
 })();
+
+/* ---------- 三种合并策略切换器 ---------- */
+(function initStrategySwitcher() {
+  const switcher = document.getElementById('strategy-switcher');
+  if (!switcher) return;
+
+  const shape = document.getElementById('strategy-shape');
+  const note = document.getElementById('strategy-note');
+  const tabs = switcher.querySelectorAll('.strategy-tabs button');
+
+  const strategies = {
+    merge: {
+      shape: '主线   ○──○─────────╮──●──○\n              ╰──○──○──╯\n你的分支   f1  f2  ↗',
+      note: '你的每一条 commit 都在，外加一个合并节点，分叉痕迹保留。适合想完整保留开发过程，或合并长期分支。',
+    },
+    squash: {
+      shape: '主线   ○──○──────●──────○\n                  ↑\n           f1+f2+f3 压成一条',
+      note: '你的 N 条 commit 被压成 1 条。最常见：一个 PR = 主线上一条记录，回头查「这个功能是哪次改的」时，一条记录比二十条零碎 commit 好用得多。',
+    },
+    rebase: {
+      shape: '主线   ○──○──●──●──●──○\n              f1  f2  f3 逐条接上，无分叉',
+      note: '你的 commit 逐条接到主线末尾，得到一条完全笔直的历史，但没有「这几条属于同一次 PR」的痕迹。',
+    },
+  };
+
+  function select(key) {
+    tabs.forEach((t) => t.classList.toggle('active', t.dataset.strategy === key));
+    shape.textContent = strategies[key].shape;
+    note.textContent = strategies[key].note;
+  }
+
+  tabs.forEach((t) => t.addEventListener('click', () => select(t.dataset.strategy)));
+  select('merge');
+})();
