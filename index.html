@@ -89,14 +89,339 @@
     <!-- 主线：七步流程，每步一个 step-card -->
     <section id="journey" class="section">
       <h2>一次需求的完整旅程</h2>
-      <article id="step-1" class="step-card"></article>
-      <article id="step-2" class="step-card"></article>
-      <article id="step-3" class="step-card"></article>
-      <article id="step-3-5" class="step-card step-card-sub"></article>
-      <article id="step-4" class="step-card"></article>
-      <article id="step-5" class="step-card"></article>
-      <article id="step-6" class="step-card"></article>
-      <article id="step-7" class="step-card"></article>
+      <article id="step-1" class="step-card">
+        <div class="step-head">
+          <span class="step-num">1</span>
+          <h3>同步主分支</h3>
+          <span class="badge badge-mixed">本地 ↔ 云端</span>
+        </div>
+        <p class="step-goal">把云端主线的最新历史抄回本地 · 完成标志：<strong>本地 main 和远程一致</strong></p>
+
+        <p>每次开工的第一件事：切回主线，把总稿的最新版抄回自己桌上。</p>
+
+        <div class="cmd"><pre><code>git checkout main   <span class="comment"># 切回主线</span>
+git pull            <span class="comment"># 拉取云端最新历史</span></code></pre></div>
+
+        <div class="callout callout-key">
+          <span class="callout-title">这一步不能省</span>
+          <p>直接在旧代码上开分支，等你做完，主线已经跑远了，最后合并时大概率冲突。开工前先 pull，是<strong>成本最低的防冲突手段</strong>。</p>
+        </div>
+
+        <details class="deep-dive">
+          <summary>深入：pull 拉下来的到底是什么？</summary>
+          <div class="deep-dive-body">
+            <p>不是「一份最新文件」，而是<strong>整个仓库的完整历史</strong>——每一次 commit、每一条分支都在你本地。所以 Git 叫「分布式」版本控制：断网了你照样能查三个月前的改动。</p>
+            <p>另一个容易想偏的点：主分支<strong>不是靠专人手工维护的</strong>，而是靠流程（PR + review + CI）保证的。没有人有权限直接往主分支上写，包括负责人自己。</p>
+          </div>
+        </details>
+      </article>
+
+      <article id="step-2" class="step-card">
+        <div class="step-head">
+          <span class="step-num">2</span>
+          <h3>新建分支</h3>
+          <span class="badge badge-local">纯本地 · 团队不可见</span>
+        </div>
+        <p class="step-goal">从主线拉一条只属于这个需求的支线 · 完成标志：<strong>你在自己的分支上，改坏也不影响别人</strong></p>
+
+        <div class="cmd"><pre><code>git checkout -b feat/login   <span class="comment"># 新建并切换到功能分支</span></code></pre></div>
+
+        <p>开分支的主要目的是<strong>隔离</strong>：五个人同时改同一个仓库，各自在自己的支线上写，互不干扰。「犯错时能兜底」只是副产品。</p>
+
+        <details class="deep-dive">
+          <summary>深入：新建分支在哪里执行？涉不涉及同步？</summary>
+          <div class="deep-dive-body">
+            <p><strong>纯本地执行，完全不需要联网，也不涉及任何同步。</strong>因为第 1 步 pull 的时候，你已经把完整历史拉到本地了，新建分支不需要向云端要任何东西。</p>
+            <p><strong>云端什么时候知道有这条分支？</strong>直到你执行第 4 步 push。在此之前，这条分支只有你自己看得见——这也是为什么第 2、3 步可以在飞机上断网干活。</p>
+            <p>（云端也能建分支，GitHub 页面上有按钮，但那是给特殊场景用的，日常开发不这么走。）</p>
+          </div>
+        </details>
+
+        <details class="deep-dive">
+          <summary>深入：分支不是代码副本，是一个 41 字节的指针</summary>
+          <div class="deep-dive-body">
+            <p>分支本质上只是一个记录着「我指向哪个 commit」的小文件，大小 41 字节。<code>git checkout -b feat/login</code> 做的事，只是「在当前这个 commit 上贴一个新标签，然后让我站到这个标签上」。你每 commit 一次，这个指针就往前挪一格。</p>
+            <p>所以开分支瞬间完成、不占空间——它不复制任何代码。</p>
+          </div>
+        </details>
+
+        <details class="deep-dive">
+          <summary>深入：branch / worktree / fork 是三个层级，不是三个选项</summary>
+          <div class="deep-dive-body">
+            <p>对照全景地图的三层模型：</p>
+            <ul>
+              <li><strong>fork</strong> 作用在最上层（仓库层）：整份复制到你名下</li>
+              <li><strong>branch</strong> 作用在中间层（历史层）：在历史上贴一个指针</li>
+              <li><strong>worktree</strong> 作用在最下层（工作目录层）：多开一份目录</li>
+            </ul>
+            <table>
+              <thead><tr><th></th><th>作用层次</th><th>在哪执行</th><th>数量关系</th><th>解决什么问题</th></tr></thead>
+              <tbody>
+                <tr><td><strong>branch</strong></td><td>历史层</td><td>本地（可推到云端）</td><td>一个仓库里可以有无数条</td><td>多人 / 多需求并行，互不干扰</td></tr>
+                <tr><td><strong>worktree</strong></td><td>工作目录层</td><td>本地</td><td>一个本地仓库对应多个目录</td><td>手上活没干完，要临时切去另一条分支</td></tr>
+                <tr><td><strong>fork</strong></td><td>仓库层</td><td>云端</td><td>从别人的仓库复制出一个新仓库</td><td>你<strong>没有</strong>原仓库的写权限</td></tr>
+              </tbody>
+            </table>
+            <p>三句话记住区别：</p>
+            <p><strong>branch 是同一个仓库里的岔路。</strong>你切换分支时，Git 把工作目录里的文件整体替换成那条分支的样子，所以同一时刻工作目录只能显示一条分支。</p>
+            <p><strong>worktree 是打破上面这个限制。</strong>在硬盘上再开一个目录，两条分支同时摊开、两个编辑器窗口并排看。共享同一份历史，只是多了一个「取景框」，属于进阶技巧。</p>
+            <p><strong>fork 是换了一个仓库。</strong>想给开源项目提改进但没有写权限，就 fork 一份到自己账号下随便写，改完从你的 fork 向原仓库发 PR，由维护者决定收不收。</p>
+            <div class="callout callout-key">
+              <span class="callout-title">记住这个比例</span>
+              <p>在公司团队里，<strong>99% 的时间只用 branch</strong>。fork 是开源协作的模式，worktree 是效率技巧。</p>
+            </div>
+          </div>
+        </details>
+      </article>
+
+      <article id="step-3" class="step-card">
+        <div class="step-head">
+          <span class="step-num">3</span>
+          <h3>本地开发</h3>
+          <span class="badge badge-local">纯本地 · 团队不可见</span>
+        </div>
+        <p class="step-goal">写代码，改一小段就存一次档 · 完成标志：<strong>若干条 commit，只在你电脑上</strong></p>
+
+        <div class="cmd"><pre><code>git status                        <span class="comment"># 哪些文件改了、哪些已进暂存区</span>
+git diff                          <span class="comment"># 具体改了哪几行</span>
+git add .                         <span class="comment"># 把改动挑进暂存区</span>
+git commit -m "修复登录接口超时"    <span class="comment"># 封箱存档，写清楚改了什么</span>
+git log                           <span class="comment"># 翻历史记录</span></code></pre></div>
+
+        <div class="callout callout-key">
+          <span class="callout-title">先划清一条边界</span>
+          <p>Git <strong>不负责</strong>准备开发环境。装依赖（<code>npm install</code>）、起本地服务、连数据库，这些跟 Git 没关系。Git 只管一件事——<strong>记录文件的变化历史</strong>。</p>
+        </div>
+
+        <details class="deep-dive">
+          <summary>深入：三个区，以及暂存区为什么存在</summary>
+          <div class="deep-dive-body">
+            <p>本地开发的核心，是理解 Git 把你的改动分成了三个区：<strong>工作区</strong>（正在改的文件）→ <code>git add</code> → <strong>暂存区</strong>（挑好准备打包的）→ <code>git commit</code> → <strong>本地仓库</strong>（已封存的历史）。</p>
+            <div class="callout callout-analogy">
+              <span class="callout-title">类比：暂存区是打包前的纸箱</span>
+              <p>你一上午改了 5 个文件，其中 3 个属于登录功能，另外 2 个是顺手改的文案错别字。暂存区让你先把那 3 个放进箱子封成一个 commit，再把另外 2 个封成第二个 commit。没有暂存区，你就只能把 5 个改动一锅端成一条记录，日后回滚时想单独撤掉错别字那部分都做不到。</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="deep-dive">
+          <summary>深入：一次 commit 里有什么？粒度怎么把握？</summary>
+          <div class="deep-dive-body">
+            <p>一次 commit 包含三样东西：<strong>改了什么</strong>（整个项目在那一刻的快照）、<strong>谁在什么时候改的</strong>、以及<strong>为什么改</strong>（就是那句 message）。每个 commit 有一个唯一 ID（一串哈希值，比如 <code>a3f9c2e</code>），它是后面所有回滚、对比、定位操作的抓手。</p>
+            <p>commit 的价值不止回滚：它是 review 的最小单元、是排查 bug 时二分定位的锚点、也是记录「为什么这么改」的地方。这就是为什么 message 要写清楚意图。</p>
+            <p><strong>粒度判断标准：一个 commit = 一件逻辑上完整的事，能用一句话说清楚。</strong></p>
+            <table>
+              <thead><tr><th>好的 message</th><th>坏的 message</th></tr></thead>
+              <tbody><tr><td>修复登录接口超时</td><td>修改 / 更新 / fix bug（三个月后你自己都不知道改了啥）</td></tr></tbody>
+            </table>
+            <p>实际节奏是一天 commit 五到十次，改一小块就封一次箱。</p>
+          </div>
+        </details>
+      </article>
+
+      <article id="step-3-5" class="step-card step-card-sub">
+        <div class="step-head">
+          <span class="step-num">3.5</span>
+          <h3>合入主线</h3>
+          <span class="badge badge-local">本地 ↔ 云端 · 团队不可见</span>
+        </div>
+        <p class="step-goal">把主线这几天的新改动吸收进你的分支，顺便在自己地盘解冲突 · 完成标志：<strong>你的分支已包含主线最新内容，冲突已解干净</strong></p>
+
+        <div class="cmd"><pre><code>git pull origin main   <span class="comment"># 把主线最新改动拉进当前分支</span></code></pre></div>
+
+        <p>这一步不是强制的，但成熟团队都这么要求。原因是分工问题：<strong>冲突要在你自己的分支上解决，不能带到主线上去解决。</strong>你在自己的分支里解冲突，解坏了大不了重来，不影响任何人；如果拖到合并时在主线上解，主线就有了一段不稳定的时间。这是「主线永远可用」这条铁律的具体落地方式。</p>
+
+        <p>顺带说明：你日常<strong>手动执行</strong>合并动作的场合，几乎全是这一步（方向：主线 → 我的分支，叫「合入」）。最后把功能并进主线的那次合并（「合出」）是在网页上点按钮，Git 命令根本不用碰——详见步骤 6。</p>
+      </article>
+      <article id="step-4" class="step-card">
+        <div class="step-head">
+          <span class="step-num">4</span>
+          <h3>推送分支</h3>
+          <span class="badge badge-visible">✓ 云端出现你的分支</span>
+        </div>
+        <p class="step-goal">把这串 commit 传上云端，团队从此看得见你 · 完成标志：<strong>云端出现同名分支</strong></p>
+
+        <p>push 做的事只有一句话：<strong>把你本地这条分支上、云端还没有的那些 commit 传上去，并在云端创建（或更新）一条同名分支。</strong></p>
+
+        <p>它<strong>不会</strong>触发任何合并。push 完了，你的分支和主线在云端还是两条平行的线，井水不犯河水。要合并必须另外申请——那就是第 5 步的 PR。</p>
+
+        <div class="cmd"><pre><code>git push -u origin feat/login   <span class="comment"># 首次推送并绑定</span>
+git push                        <span class="comment"># 绑定之后，以后直接这样</span></code></pre></div>
+
+        <p>命令逐段拆解：</p>
+        <table>
+          <thead><tr><th>部分</th><th>含义</th></tr></thead>
+          <tbody>
+            <tr><td><code>origin</code></td><td>远程仓库的默认代号（clone 时那个地址的别名）</td></tr>
+            <tr><td><code>feat/login</code></td><td>分支名</td></tr>
+            <tr><td><code>-u</code></td><td>把本地这条分支和云端那条绑定起来，之后敲 <code>git push</code> 就够了</td></tr>
+          </tbody>
+        </table>
+
+        <p>push 成功之后去 GitHub / GitLab 页面，通常会自动弹出「你刚推了一条新分支，要提 PR 吗」的提示——点进去，第 5 步就开始了。</p>
+
+        <div class="callout callout-rescue">
+          <span class="callout-title">出错自救：push 被拒绝了</span>
+          <p><strong>常见原因</strong>：云端那条分支上有你本地没有的 commit（比如同事也在这条分支上干活）。Git 拦住你，是在防止覆盖别人的工作。</p>
+          <p><strong>解法</strong>：先 <code>git pull</code> 把云端的整合下来，再 push。</p>
+          <p><strong>危险操作</strong>：<code>--force</code> 强推可以绕过拦截，但会直接抹掉云端的记录——只能对<strong>确认没有第二个人在用</strong>的分支使用。在主线上强推是重大事故。</p>
+        </div>
+      </article>
+
+      <article id="step-5" class="step-card">
+        <div class="step-head">
+          <span class="step-num">5</span>
+          <h3>提交评审</h3>
+          <span class="badge badge-visible">✓ 云端 · 全程可见</span>
+        </div>
+        <p class="step-goal">开 PR，等两道检查 · 完成标志：<strong>Review 通过 + CI 全绿</strong></p>
+
+        <p>PR（GitHub 叫 Pull Request，GitLab 叫 Merge Request）本质是一个<strong>「申请把我的支线并进主线」的工单</strong>，上面挂着两道检查，两道都通过才允许合并：</p>
+
+        <table>
+          <thead><tr><th>检查</th><th>由谁执行</th><th>查什么</th></tr></thead>
+          <tbody>
+            <tr><td><strong>人工 review</strong></td><td>同事</td><td>逐行看代码、留评论、提修改意见</td></tr>
+            <tr><td><strong>CI 自动化</strong></td><td>机器</td><td>跑单元测试、跑构建、跑 lint（代码规范检查）</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-key">
+          <span class="callout-title">这一步是整个流程的质量闸门，也是 PM 的观察窗口</span>
+          <p>作为 PM，你能在 PR 页面直接看到需求的实现状态和卡在哪一环：是还没人 review，还是 CI 红了在返工。不用去问「做完了吗」，工单上写着。</p>
+        </div>
+      </article>
+
+      <article id="step-6" class="step-card">
+        <div class="step-head">
+          <span class="step-num">6</span>
+          <h3>合并主线</h3>
+          <span class="badge badge-visible">✓ 你的功能进入主线</span>
+        </div>
+        <p class="step-goal">在网页上点合并按钮，把分支缝进主线 · 完成标志：<strong>主线包含你的功能</strong></p>
+
+        <p>PR 通过后，在页面上选一种合并策略、点一下按钮即可。这一步不需要敲任何 Git 命令。</p>
+
+        <details class="deep-dive">
+          <summary>深入：merge 出现了两次，方向相反——先分清这个</summary>
+          <div class="deep-dive-body">
+            <p>绝大多数人被 merge 绕晕，是因为把两个方向都叫「合并」：</p>
+            <table>
+              <thead><tr><th></th><th>方向</th><th>在哪执行</th><th>什么时候</th><th>目的</th></tr></thead>
+              <tbody>
+                <tr><td><strong>合入</strong></td><td>主线 → 我的分支</td><td>本地敲命令</td><td>push / 提 PR 之前（步骤 3.5）</td><td>吸收别人的新改动，在自己地盘解冲突</td></tr>
+                <tr><td><strong>合出</strong></td><td>我的分支 → 主线</td><td>云端点按钮</td><td>PR 通过之后（本步）</td><td>把你的功能正式并进主线</td></tr>
+              </tbody>
+            </table>
+            <p><strong>你日常手动敲 merge 命令的场合，几乎全是第一种。</strong></p>
+          </div>
+        </details>
+
+        <details class="deep-dive">
+          <summary>深入：合并的内部逻辑——三方比较</summary>
+          <div class="deep-dive-body">
+            <p>Git 合并不是「拿新的覆盖旧的」。它先找到两条分支<strong>最后一次相同的那个节点</strong>（共同祖先），然后拿三份内容逐块对比——祖先、主线现在的样子、我的分支现在的样子。判断规则只有三条：</p>
+            <table>
+              <thead><tr><th>情况</th><th>Git 的处理</th></tr></thead>
+              <tbody>
+                <tr><td>只有我改了这块</td><td>采用我的</td></tr>
+                <tr><td>只有主分支改了这块</td><td>采用主分支的</td></tr>
+                <tr><td>两边都改了同一块，且改法不同</td><td><strong>报冲突</strong>，交给人决定</td></tr>
+              </tbody>
+            </table>
+            <p>关键在「共同祖先」这个参照点。没有它，Git 只能看到两份不同的文件，无法判断某处差异是「你新加的」还是「对方删掉的」——有了祖先，就能分辨每一处改动<strong>属于谁</strong>。这也是为什么「删掉一行」和「从没写过这一行」在合并时结果完全不同。</p>
+            <p>还有一种最简单的情况叫 <strong>fast-forward</strong>：如果你开分支之后主线一动没动，根本不需要三方比较，Git 直接把主线的指针往前挪到你分支的末端就完事了。</p>
+          </div>
+        </details>
+
+        <details class="deep-dive">
+          <summary>深入：冲突长什么样、怎么解</summary>
+          <div class="deep-dive-body">
+            <p>冲突<strong>不是错误，是正常现象</strong>——两边改了同一块，机器不知道该听谁的，把决定权交给人。Git 会直接在文件里插入标记，把两个版本都摆出来：</p>
+            <div class="cmd conflict-sample"><pre><code><span class="marker">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>
+<span class="ours">const timeout = 3000;</span>
+<span class="marker">=======</span>
+<span class="theirs">const timeout = 5000;</span>
+<span class="marker">&gt;&gt;&gt;&gt;&gt;&gt;&gt; feat/login</span></code></pre></div>
+            <p>上半截（<code>HEAD</code> 之后）是主线的版本，下半截是你的版本。<strong>解决冲突 = 手动把这段编辑成最终想要的样子</strong>（可能选上面、可能选下面、也可能两个都不要另写一个），把那三行标记删干净，然后 <code>git add</code> + <code>git commit</code>。</p>
+            <p>没有任何魔法，就是人工做决定。Git 从来不敢替你猜——因为它不懂业务，5000 还是 3000 只有你知道。</p>
+          </div>
+        </details>
+
+        <details class="deep-dive">
+          <summary>深入：合并按钮上的三个选项</summary>
+          <div class="deep-dive-body">
+            <p>GitHub / GitLab 的合并按钮通常有三个选项，区别只在于<strong>合并后主线的历史长什么样</strong>：</p>
+            <div class="history-shape">Merge commit        ○──○─────╮────●──○
+                        ╰──○──○──╯
+
+Squash and merge    ○──○────●────○
+
+Rebase and merge    ○──○──●──●──○</div>
+            <table>
+              <thead><tr><th>策略</th><th>主线上留下什么</th><th>什么时候用</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Merge commit</strong></td><td>你的每一条 commit 都在，外加一个合并节点，分叉痕迹保留</td><td>想完整保留开发过程，或合并的是长期分支</td></tr>
+                <tr><td><strong>Squash and merge</strong></td><td>你的 N 条 commit 被压成 1 条</td><td><strong>最常见</strong>。一个 PR = 主线上一条记录，历史干净好查</td></tr>
+                <tr><td><strong>Rebase and merge</strong></td><td>你的 commit 逐条接到主线末尾，没有分叉</td><td>想要一条完全笔直的历史</td></tr>
+              </tbody>
+            </table>
+            <p>这三个选择<strong>不影响最终代码内容，只影响历史的可读性</strong>——所以它是团队规范问题，不是技术问题。大部分产品团队默认用 Squash：回头查「这个功能是哪次改的」时，一条记录比二十条零碎 commit 好用得多。</p>
+          </div>
+        </details>
+
+        <details class="deep-dive">
+          <summary>深入：merge vs rebase，以及一条铁律</summary>
+          <div class="deep-dive-body">
+            <p>在本地整合主线改动时（步骤 3.5），其实有两个选项：</p>
+            <table>
+              <thead><tr><th></th><th>做法</th><th>历史形态</th><th>代价</th></tr></thead>
+              <tbody>
+                <tr><td><strong>merge</strong></td><td>造一个新的合并节点，把两边接起来</td><td>保留分叉痕迹</td><td>历史图会有很多交叉</td></tr>
+                <tr><td><strong>rebase</strong></td><td>把你的 commit 摘下来，重新接到主线末端</td><td>一条直线</td><td><strong>commit ID 全部变了</strong></td></tr>
+              </tbody>
+            </table>
+            <div class="callout callout-rescue">
+              <span class="callout-title">铁律</span>
+              <p><strong>不要 rebase 已经 push 出去、并且别人正在用的分支。</strong>因为 rebase 会改写 commit ID，别人手上的 ID 和你的对不上，整个团队会乱。只在自己的、还没分享出去的分支上 rebase。</p>
+            </div>
+          </div>
+        </details>
+      </article>
+
+      <article id="step-7" class="step-card">
+        <div class="step-head">
+          <span class="step-num">7</span>
+          <h3>收尾</h3>
+          <span class="badge badge-mixed">本地 ↔ 云端</span>
+        </div>
+        <p class="step-goal">删分支、切回主线、再拉一次 · 完成标志：<strong>本地回到第 1 步的干净状态，可以接下一个需求</strong></p>
+
+        <p>很多人漏掉这步。合并完成之后：</p>
+
+        <div class="cmd"><pre><code><span class="comment"># ① 在 PR 页面点按钮删掉云端分支</span>
+git checkout main        <span class="comment"># ② 本地切回主线</span>
+git pull                 <span class="comment"># ③ 把刚合进去的东西拿下来</span>
+git branch -d feat/login <span class="comment"># ④ 删掉本地分支</span></code></pre></div>
+
+        <p>一次需求 = 一个循环。循环结束，分支就删掉——下一个需求从第 1 步重新开始。</p>
+      </article>
+
+      <h3>三条贯穿始终的原则</h3>
+      <div class="principles">
+        <div class="principle-card">
+          <h4>主线只读</h4>
+          <p>没有人直接往 main 上写代码，所有改动必须走「开分支 → PR → 评审 → 合并」这条唯一通道。这不是礼貌，是权限设置强制的（叫分支保护规则）。</p>
+        </div>
+        <div class="principle-card">
+          <h4>分支要短命</h4>
+          <p>从开分支到收尾，健康的周期是几小时到两三天。拖得越久主线跑得越远，要解的冲突越多。<strong>需求拆得细，本质上是为了让分支活得短。</strong></p>
+        </div>
+        <div class="principle-card">
+          <h4>冲突在自己家里解</h4>
+          <p>步骤 3.5 存在的全部意义：把所有不确定性消化在你的分支上。交到主线的必须是已经跟主线对齐过、CI 跑绿了的干净代码。</p>
+        </div>
+      </div>
     </section>
 
     <!-- 误区对照卡：常见的理解 vs 实际 -->
