@@ -365,6 +365,51 @@ details.deep-dive summary::-webkit-details-marker { display: none; }
 .layer-arrows .up::before { content: "↑ "; }
 .layer-arrows .down::before { content: "↓ "; }
 
+/* ---------- 分支生命周期图（随滚动演化） ---------- */
+.lifecycle {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .6rem .9rem .1rem;
+  margin: 1rem 0 2.5rem;
+  box-shadow: 0 4px 12px rgba(31, 35, 40, .04);
+}
+
+.lifecycle svg { width: 100%; height: auto; display: block; }
+
+.lc-line { stroke-width: 2.5; fill: none; }
+.lc-main-line { stroke: #b7bfc7; }
+.lc-branch-line { stroke: var(--purple); }
+.lc-merge-in { stroke: var(--accent); stroke-dasharray: 5 4; }
+.lc-merge-out { stroke: var(--green); stroke-dasharray: 5 4; }
+
+.lc-commit { stroke-width: 2.5; }
+.lc-main { fill: #fff; stroke: #57606a; }
+.lc-feat { fill: #fff; stroke: var(--purple); }
+.lc-squash { fill: var(--green); stroke: var(--green); }
+
+.lc-label { font-size: 11px; fill: var(--ink-secondary); font-family: var(--mono); }
+.lc-branch-label { fill: var(--purple); font-weight: 650; }
+.lc-main-label { fill: #57606a; font-weight: 650; }
+
+.lc-tag { fill: var(--accent-soft); stroke: #b6e3ff; }
+.lc-tag-pr { fill: var(--orange-soft); stroke: #d4a72c; }
+.lc-tag-text { font-size: 11px; fill: var(--ink); }
+
+.lc-st { opacity: 0; transition: opacity .45s ease; }
+.lc-st.on { opacity: 1; }
+.lc-st.dim { opacity: .22; }
+
+.lc-caption {
+  margin: .35rem 0 .55rem;
+  font-size: .85rem;
+  color: var(--ink-secondary);
+  min-height: 1.6em;
+}
+
 /* ---------- 误区对照卡 ---------- */
 .miscon-card {
   margin: 1.5rem 0;
@@ -461,6 +506,71 @@ details.deep-dive summary::-webkit-details-marker { display: none; }
 .conflict-sample .marker { color: var(--red); font-weight: 650; }
 .conflict-sample .ours { background: var(--accent-soft); display: inline-block; width: 100%; }
 .conflict-sample .theirs { background: var(--purple); background: #fbefff; display: inline-block; width: 100%; }
+
+/* ---------- 冲突解决模拟器 ---------- */
+.conflict-sim {
+  margin-top: 1.2rem;
+  padding: 1rem 1.1rem;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  background: var(--bg-subtle);
+}
+
+.sim-title { font-weight: 650; margin: 0 0 .3rem; }
+.sim-desc { font-size: .9rem; color: var(--ink-secondary); margin: 0 0 .8rem; }
+
+.sim-choices { display: flex; gap: .6rem; flex-wrap: wrap; }
+
+.sim-choices button, .sim-reset {
+  padding: .45rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: .88rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.sim-choices button:hover, .sim-reset:hover { border-color: var(--accent); color: var(--accent); }
+
+.sim-choices button.chosen {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 650;
+}
+
+.sim-result { margin-top: 1rem; }
+.sim-result-label { font-size: .85rem; font-weight: 650; margin: .8rem 0 .3rem; }
+.sim-note { font-size: .88rem; color: var(--ink-secondary); margin: .5rem 0; }
+.sim-reset { margin-top: .5rem; }
+
+/* ---------- 合并策略切换器 ---------- */
+.strategy-tabs { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .6rem; }
+
+.strategy-tabs button {
+  padding: .4rem .85rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  font-family: var(--mono);
+  font-size: .83rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.strategy-tabs button:hover { border-color: var(--accent); color: var(--accent); }
+
+.strategy-tabs button.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 650;
+}
+
+.strategy-switcher .history-shape { margin: .5rem 0; min-height: 4.5em; }
+.strategy-note { font-size: .9rem; color: var(--ink-secondary); margin: .5rem 0 0; }
 
 /* ---------- 响应式：窄屏收起侧边栏 ---------- */
 @media (max-width: 960px) {
