@@ -89,6 +89,63 @@
     <!-- 主线：七步流程，每步一个 step-card -->
     <section id="journey" class="section">
       <h2>一次需求的完整旅程</h2>
+
+      <!-- 分支生命周期图：随滚动逐步演化 -->
+      <div class="lifecycle" id="lifecycle" aria-label="分支生命周期示意图">
+        <svg viewBox="0 0 560 130" xmlns="http://www.w3.org/2000/svg">
+          <!-- 主线 -->
+          <line x1="20" y1="85" x2="540" y2="85" class="lc-line lc-main-line"/>
+          <text x="24" y="105" class="lc-label lc-main-label">main</text>
+          <circle cx="50"  cy="85" r="7" class="lc-commit lc-main"/>
+          <circle cx="110" cy="85" r="7" class="lc-commit lc-main"/>
+          <circle cx="170" cy="85" r="7" class="lc-commit lc-main"/>
+          <!-- 步骤 3.5：主线跑出的新 commit -->
+          <g class="lc-st lc-st-3">
+            <circle cx="260" cy="85" r="7" class="lc-commit lc-main"/>
+            <text x="260" y="108" class="lc-label" text-anchor="middle">m4</text>
+          </g>
+          <!-- 步骤 2：分支指针出现 -->
+          <g class="lc-st lc-st-1">
+            <path d="M 170 85 L 210 35" class="lc-line lc-branch-line"/>
+            <line x1="210" y1="35" x2="430" y2="35" class="lc-line lc-branch-line"/>
+            <text x="210" y="18" class="lc-label lc-branch-label">feat/login</text>
+          </g>
+          <!-- 步骤 3：分支上的 commit -->
+          <g class="lc-st lc-st-2">
+            <circle cx="240" cy="35" r="7" class="lc-commit lc-feat"/>
+            <circle cx="300" cy="35" r="7" class="lc-commit lc-feat"/>
+            <text x="240" y="58" class="lc-label" text-anchor="middle">f1</text>
+            <text x="300" y="58" class="lc-label" text-anchor="middle">f2</text>
+          </g>
+          <!-- 步骤 3.5：合入主线 -->
+          <g class="lc-st lc-st-3">
+            <path d="M 260 85 C 300 70, 330 50, 362 40" class="lc-line lc-merge-in"/>
+            <circle cx="370" cy="35" r="7" class="lc-commit lc-feat"/>
+            <text x="370" y="58" class="lc-label" text-anchor="middle">f3</text>
+          </g>
+          <!-- 步骤 4：推送云端 -->
+          <g class="lc-st lc-st-4">
+            <rect x="440" y="22" rx="10" width="86" height="24" class="lc-tag lc-tag-push"/>
+            <text x="483" y="38" class="lc-tag-text" text-anchor="middle">☁ 已推云端</text>
+          </g>
+          <!-- 步骤 5：PR 挂起 -->
+          <g class="lc-st lc-st-5">
+            <rect x="392" y="52" rx="10" width="96" height="22" class="lc-tag lc-tag-pr"/>
+            <text x="440" y="67" class="lc-tag-text" text-anchor="middle">PR：评审中…</text>
+          </g>
+          <!-- 步骤 6：Squash 合并进主线 -->
+          <g class="lc-st lc-st-6">
+            <path d="M 370 35 C 400 50, 420 70, 442 80" class="lc-line lc-merge-out"/>
+            <circle cx="450" cy="85" r="8" class="lc-commit lc-squash"/>
+            <text x="450" y="110" class="lc-label" text-anchor="middle">●=f1+f2+f3</text>
+          </g>
+          <!-- 步骤 7：主线继续 -->
+          <g class="lc-st lc-st-7">
+            <circle cx="510" cy="85" r="7" class="lc-commit lc-main"/>
+          </g>
+        </svg>
+        <p class="lc-caption" id="lc-caption">开工前：主线上是全团队共享的历史</p>
+      </div>
       <article id="step-1" class="step-card">
         <div class="step-head">
           <span class="step-num">1</span>
