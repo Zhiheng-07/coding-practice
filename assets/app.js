@@ -156,3 +156,111 @@
   tabs.forEach((t) => t.addEventListener('click', () => select(t.dataset.strategy)));
   select('merge');
 })();
+
+/* ---------- 术语解释系统 ----------
+   词库是唯一数据源：正文自动标记 + 悬停解释卡 + 页尾名词对照表都从这里渲染 */
+const GLOSSARY = [
+  { en: 'pull',        zh: '拉取',     desc: '云端 → 本地：把远程仓库的最新历史抓回本地。每天开工第一件事。' },
+  { en: 'commit',      zh: '提交',     desc: '把暂存区的改动封箱成一条历史记录，附带「为什么改」的说明。只发生在你电脑上，团队看不见。' },
+  { en: 'push',        zh: '推送',     desc: '把本地分支上、云端还没有的 commit 传上去。push 之后团队才看得见你。' },
+  { en: 'merge',       zh: '合并',     desc: '把一条分支的改动缝进另一条分支。内部逻辑是三方比较，不是覆盖。' },
+  { en: 'branch',      zh: '分支',     desc: '指向某个 commit 的指针（一个 41 字节的小文件），不是代码副本。用于多人多需求并行、互不干扰。' },
+  { en: 'main',        zh: '主分支',   desc: '唯一的、受保护的正式版本线。没有人能直接往上写，所有改动必须走 PR。' },
+  { en: 'origin',      zh: '远程代号', desc: '远程仓库的默认代号——clone 时那个地址的别名。' },
+  { en: 'checkout',    zh: '检出',     desc: '切换到某条分支，工作目录里的文件会整体替换成那条分支的样子。' },
+  { en: 'clone',       zh: '克隆',     desc: '第一次把云端仓库（含完整历史）复制到本地。' },
+  { en: 'rebase',      zh: '变基',     desc: '把你的 commit 摘下来，重新接到别处（通常是主线末端）。会改写 commit ID——所以只能对还没分享出去的分支做。' },
+  { en: 'squash',      zh: '压缩合并', desc: '把 N 条零碎 commit 压成 1 条再进主线。最常见的 PR 合并策略。' },
+  { en: 'conflict',    zh: '冲突',     desc: '两边改了同一处、改法不同，Git 不替你猜，交人工裁决。是正常现象，不是错误。' },
+  { en: 'PR',          zh: '合并申请', desc: 'Pull Request（GitLab 叫 Merge Request）：「申请把我的支线并进主线」的工单，挂着人工 review 和 CI 两道检查。' },
+  { en: 'review',      zh: '人工评审', desc: '同事逐行看代码、留评论、提修改意见。PR 的第一道检查。' },
+  { en: 'CI',          zh: '持续集成', desc: '自动跑测试、构建、代码规范检查的机器人。PR 的第二道检查，全绿才能合并。' },
+  { en: 'lint',        zh: '规范检查', desc: '自动检查代码风格与常见问题的工具，CI 常跑的一项。' },
+  { en: 'fork',        zh: '派生',     desc: '把整个仓库复制一份到你名下。用于你没有原仓库写权限的场景（开源协作的标准姿势）。' },
+  { en: 'worktree',    zh: '多工作树', desc: '同一个本地仓库在硬盘上多开一个工作目录，两条分支同时摊开。效率技巧。' },
+  { en: 'HEAD',        zh: '当前位置', desc: '你此刻站在哪——当前检出的那条分支（或那个 commit）。冲突标记里的 HEAD 就是「你所在的这边」。' },
+];
+
+(function initGlossary() {
+  /* 1. 自动标记：把正文里出现的术语包上 .term（跳过代码块、标题、SVG 等） */
+  const SKIP = new Set(['PRE', 'CODE', 'SCRIPT', 'STYLE', 'SVG', 'BUTTON', 'H1', 'H2']);
+  const byLower = new Map(GLOSSARY.map((g) => [g.en.toLowerCase(), g]));
+  const pattern = new RegExp(
+    '\\b(' + GLOSSARY.map((g) => g.en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')\\b',
+    'g'
+  );
+
+  function walk(node) {
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      if (SKIP.has(node.tagName) || node.classList.contains('term')) return;
+      Array.from(node.childNodes).forEach(walk);
+      return;
+    }
+    if (node.nodeType !== Node.TEXT_NODE || !pattern.test(node.textContent)) return;
+    pattern.lastIndex = 0;
+
+    const frag = document.createDocumentFragment();
+    let rest = node.textContent;
+    let m;
+    let idx = 0;
+    pattern.lastIndex = 0;
+    while ((m = pattern.exec(rest)) !== null) {
+      frag.appendChild(document.createTextNode(rest.slice(idx, m.index)));
+      const span = document.createElement('span');
+      span.className = 'term';
+      span.tabIndex = 0;
+      span.dataset.term = m[1].toLowerCase();
+      span.textContent = m[1];
+      frag.appendChild(span);
+      idx = m.index + m[1].length;
+    }
+    frag.appendChild(document.createTextNode(rest.slice(idx)));
+    node.parentNode.replaceChild(frag, node);
+  }
+
+  walk(document.querySelector('.content'));
+
+  /* 2. 悬停 / 点按解释卡 */
+  const tip = document.createElement('div');
+  tip.className = 'term-tip';
+  tip.hidden = true;
+  document.body.appendChild(tip);
+
+  function show(termEl) {
+    const g = byLower.get(termEl.dataset.term);
+    if (!g) return;
+    tip.innerHTML = '<strong>' + g.en + ' · ' + g.zh + '</strong>' + g.desc;
+    tip.hidden = false;
+    const r = termEl.getBoundingClientRect();
+    const tw = tip.offsetWidth;
+    let left = r.left + r.width / 2 - tw / 2;
+    left = Math.max(12, Math.min(left, window.innerWidth - tw - 12));
+    tip.style.left = left + 'px';
+    const above = r.top > tip.offsetHeight + 16;
+    tip.style.top = (above ? r.top - tip.offsetHeight - 8 : r.bottom + 8) + 'px';
+  }
+
+  document.addEventListener('mouseover', (e) => {
+    const t = e.target.closest('.term');
+    if (t) show(t);
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest('.term')) tip.hidden = true;
+  });
+  document.addEventListener('focusin', (e) => {
+    const t = e.target.closest('.term');
+    if (t) show(t); else tip.hidden = true;
+  });
+  window.addEventListener('scroll', () => { tip.hidden = true; }, { passive: true });
+
+  /* 3. 页尾名词对照表：与词库同源渲染 */
+  const table = document.getElementById('glossary-table');
+  if (table) {
+    const tbody = table.querySelector('tbody');
+    GLOSSARY.forEach((g) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td><code>' + g.en + '</code></td><td>' + g.zh + '</td><td>' + g.desc + '</td>';
+      tbody.appendChild(tr);
+    });
+  }
+})();

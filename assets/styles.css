@@ -572,6 +572,35 @@ details.deep-dive summary::-webkit-details-marker { display: none; }
 .strategy-switcher .history-shape { margin: .5rem 0; min-height: 4.5em; }
 .strategy-note { font-size: .9rem; color: var(--ink-secondary); margin: .5rem 0 0; }
 
+/* ---------- 术语标记与解释卡 ---------- */
+.term {
+  border-bottom: 1.5px dotted var(--accent);
+  cursor: help;
+  font-family: var(--mono);
+  font-size: .92em;
+}
+
+.term-tip {
+  position: fixed;
+  z-index: 100;
+  max-width: 340px;
+  padding: .7rem .9rem;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 8px;
+  font-size: .85rem;
+  line-height: 1.65;
+  box-shadow: 0 8px 24px rgba(31, 35, 40, .2);
+  pointer-events: none;
+}
+
+.term-tip strong {
+  display: block;
+  margin-bottom: .2rem;
+  color: #9ecbff;
+  font-family: var(--mono);
+}
+
 /* ---------- 响应式：窄屏收起侧边栏 ---------- */
 @media (max-width: 960px) {
   .progress-nav { display: none; }
