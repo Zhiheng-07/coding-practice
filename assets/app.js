@@ -286,13 +286,32 @@ const GLOSSARY = [
         .map((line) => line.replace(/\s*#.*$/, '').trimEnd())
         .filter((line) => line.trim() !== '')
         .join('\n');
-      navigator.clipboard.writeText(text).then(() => {
-        btn.textContent = '✓ 已复制';
+
+      const done = (ok) => {
+        btn.textContent = ok ? '✓ 已复制' : '复制失败';
         setTimeout(() => { btn.textContent = '复制'; }, 1600);
-      }).catch(() => {
-        btn.textContent = '复制失败';
-        setTimeout(() => { btn.textContent = '复制'; }, 1600);
-      });
+      };
+
+      // navigator.clipboard 仅在 HTTPS / localhost 可用；
+      // 本地 file:// 打开时降级为临时文本框 + execCommand
+      const fallbackCopy = () => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        let ok = false;
+        try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+        ta.remove();
+        done(ok);
+      };
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => done(true), fallbackCopy);
+      } else {
+        fallbackCopy();
+      }
     });
   });
 })();
