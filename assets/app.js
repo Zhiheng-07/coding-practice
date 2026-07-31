@@ -192,7 +192,9 @@ const GLOSSARY = [
 
   function walk(node) {
     if (node.nodeType === Node.ELEMENT_NODE) {
-      if (SKIP.has(node.tagName) || node.classList.contains('term')) return;
+      // SVG 元素的 tagName 是小写（如 'svg'），统一转大写后比对，
+      // 否则会深入分支图内部，把 <text> 里的 main、PR 换成 HTML span 而无法渲染
+      if (SKIP.has(node.tagName.toUpperCase()) || node.classList.contains('term')) return;
       Array.from(node.childNodes).forEach(walk);
       return;
     }
