@@ -294,3 +294,99 @@ const GLOSSARY = [
     });
   });
 })();
+
+/* ---------- 自测判断题 ---------- */
+(function initQuiz() {
+  const list = document.getElementById('quiz-list');
+  if (!list) return;
+
+  const QUESTIONS = [
+    {
+      q: '「同步主分支，就是从云端下载一份最新的确认版文件，它由专人维护。」',
+      ok: false,
+      why: '拉下来的是整个仓库的完整历史（每条 commit、每条分支都在本地），这就是「分布式」。主分支也不是专人维护的，是靠 PR + review + CI 的流程保证的。',
+    },
+    {
+      q: '「新建分支主要是为了犯错时能兜底。」',
+      ok: false,
+      why: '兜底只是副产品。主要目的是隔离——多人多需求同时改同一个仓库，各写各的互不干扰。',
+    },
+    {
+      q: '「commit 之后，团队同事就能看到我的改动了。」',
+      ok: false,
+      why: 'commit 只动你自己的电脑。push 之后团队才看得见——这条分界线贯穿整个流程。',
+    },
+    {
+      q: '「新建分支是纯本地操作，断网也能做。」',
+      ok: true,
+      why: '正确。pull 时完整历史已经在本地了，开分支只是贴一个 41 字节的指针，不需要向云端要任何东西。',
+    },
+    {
+      q: '「push 之前，需要先把本地的分支合并一下再推。」',
+      ok: false,
+      why: 'push 不需要预先合并——它就是把你这条分支上的 commit 原样传上去。如果指的是把零碎 commit 压整齐，那叫 rebase / squash，跟 merge 是两回事。',
+    },
+    {
+      q: '「合并时，Git 会自动拿新版本覆盖旧版本。」',
+      ok: false,
+      why: 'Git 做的是三方比较：找到共同祖先，逐块对比三份内容。只有一边改的采用那一边；两边都改了同一块才报冲突、交人裁决。',
+    },
+    {
+      q: '「冲突说明有人操作失误了。」',
+      ok: false,
+      why: '冲突不是错误，是正常现象——两边改了同一处，机器不懂业务不敢猜，把决定权交给人。',
+    },
+    {
+      q: '「PR 要人工 review 和 CI 两道检查都通过，才能合并进主线。」',
+      ok: true,
+      why: '正确。这就是流程的质量闸门，也是 PM 在页面上就能看到需求卡在哪一环的原因。',
+    },
+    {
+      q: '「三种合并策略（Merge / Squash / Rebase）会导致最终代码内容不同。」',
+      ok: false,
+      why: '三种策略不影响最终代码内容，只影响主线历史的可读性——所以这是团队规范问题，不是技术问题。',
+    },
+  ];
+
+  let answered = 0;
+  let correct = 0;
+  const score = document.getElementById('quiz-score');
+
+  QUESTIONS.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-item';
+    card.innerHTML =
+      '<p class="quiz-q"><span class="quiz-idx">' + (i + 1) + '</span>' + item.q + '</p>' +
+      '<div class="quiz-btns">' +
+      '<button type="button" data-ans="true">对</button>' +
+      '<button type="button" data-ans="false">不对 / 有偏差</button>' +
+      '</div>' +
+      '<div class="quiz-why" hidden></div>';
+    list.appendChild(card);
+
+    const btns = card.querySelectorAll('button');
+    const why = card.querySelector('.quiz-why');
+
+    btns.forEach((b) => b.addEventListener('click', () => {
+      if (card.classList.contains('done')) return;
+      card.classList.add('done');
+
+      const isRight = (b.dataset.ans === 'true') === item.ok;
+      b.classList.add(isRight ? 'right' : 'wrong');
+      why.innerHTML =
+        '<strong>' + (isRight ? '✓ 判断正确。' : '✗ 再想想——') + '</strong>' + item.why;
+      why.hidden = false;
+
+      answered += 1;
+      if (isRight) correct += 1;
+      if (answered === QUESTIONS.length) {
+        score.textContent =
+          '全部答完：' + correct + ' / ' + QUESTIONS.length +
+          (correct === QUESTIONS.length
+            ? '。误区已扫清，可以开始第一个真实需求了。'
+            : '。答错的几条，回到上面对应的步骤和误区对照卡再看一眼。');
+        score.hidden = false;
+      }
+    }));
+  });
+})();

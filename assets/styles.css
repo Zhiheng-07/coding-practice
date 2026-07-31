@@ -623,6 +623,68 @@ details.deep-dive summary::-webkit-details-marker { display: none; }
 .cmd:hover .copy-btn, .copy-btn:focus { opacity: 1; }
 .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
 
+/* ---------- 自测判断题 ---------- */
+.quiz-item {
+  margin: 1rem 0;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.quiz-q { margin: 0 0 .7rem; font-weight: 500; }
+
+.quiz-idx {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  border-radius: 12px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  font-size: .78rem;
+  font-family: var(--mono);
+}
+
+.quiz-btns { display: flex; gap: .6rem; }
+
+.quiz-btns button {
+  padding: .4rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: .9rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.quiz-item:not(.done) .quiz-btns button:hover { border-color: var(--accent); color: var(--accent); }
+
+.quiz-item.done .quiz-btns button { cursor: default; opacity: .55; }
+.quiz-item.done .quiz-btns button.right { opacity: 1; border-color: var(--green); background: var(--green-soft); color: var(--green); font-weight: 650; }
+.quiz-item.done .quiz-btns button.wrong { opacity: 1; border-color: var(--red); background: var(--red-soft); color: var(--red); font-weight: 650; }
+
+.quiz-why {
+  margin-top: .8rem;
+  padding: .7rem .9rem;
+  border-radius: 8px;
+  background: var(--bg-subtle);
+  font-size: .9rem;
+}
+
+.quiz-why strong { display: block; margin-bottom: .2rem; }
+
+.quiz-score {
+  margin-top: 1.5rem;
+  padding: .9rem 1.1rem;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  border: 1px solid #b6e3ff;
+  font-weight: 650;
+}
+
 /* ---------- 响应式：窄屏收起侧边栏 ---------- */
 @media (max-width: 960px) {
   .progress-nav { display: none; }
