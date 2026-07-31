@@ -4,7 +4,701 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Git 标准开发流程 · 一次需求的完整旅程</title>
-  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+/* ============================================================
+   Git 标准开发流程教学站 · 样式系统
+   简洁文档风：白底、大留白、排版层级优先
+   ============================================================ */
+
+/* ---------- 设计变量 ---------- */
+:root {
+  --ink: #1f2328;            /* 正文 */
+  --ink-secondary: #59636e;  /* 次要文字 */
+  --accent: #0969da;         /* 强调蓝 */
+  --accent-soft: #ddf4ff;    /* 强调蓝底色 */
+  --green: #1a7f37;          /* 云端可见 / 成功 */
+  --green-soft: #dafbe1;
+  --orange: #9a6700;         /* 警示 / 误区 */
+  --orange-soft: #fff8c5;
+  --red: #cf222e;            /* 危险 */
+  --red-soft: #ffebe9;
+  --purple: #8250df;         /* 分支色 */
+  --border: #d0d7de;
+  --bg-subtle: #f6f8fa;
+  --bg: #ffffff;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB",
+          "Microsoft YaHei", "Segoe UI", sans-serif;
+  --nav-width: 232px;
+}
+
+/* ---------- 基础 ---------- */
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { line-height: 1.4; font-weight: 650; }
+h1 { font-size: 2.3rem; letter-spacing: .01em; margin: 0 0 .5rem; }
+h2 { font-size: 1.65rem; margin: 0 0 1.2rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
+h3 { font-size: 1.25rem; margin: 2rem 0 .8rem; }
+h4 { font-size: 1.05rem; margin: 1.5rem 0 .6rem; }
+
+p { margin: .8em 0; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+strong { font-weight: 650; }
+
+code {
+  font-family: var(--mono);
+  font-size: .88em;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: .1em .35em;
+  white-space: nowrap;
+}
+
+/* ---------- 布局：左侧进度条 + 右侧内容 ---------- */
+.content {
+  margin-left: var(--nav-width);
+  max-width: 780px;
+  padding: 0 48px 80px;
+}
+
+.section { padding-top: 72px; }
+
+/* ---------- 侧边流程进度条 ---------- */
+.progress-nav {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--nav-width);
+  padding: 32px 12px 32px 20px;
+  border-right: 1px solid var(--border);
+  background: var(--bg);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: .86rem;
+  color: var(--ink-secondary);
+  border-left: 2px solid transparent;
+}
+
+.nav-item:hover { background: var(--bg-subtle); text-decoration: none; }
+
+.nav-item.active {
+  color: var(--accent);
+  background: var(--accent-soft);
+  font-weight: 600;
+}
+
+.nav-group-label {
+  margin: 14px 0 4px;
+  padding: 0 10px;
+  font-size: .72rem;
+  font-weight: 650;
+  letter-spacing: .08em;
+  color: var(--ink-secondary);
+  text-transform: uppercase;
+}
+
+.nav-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 4px;
+  border-radius: 11px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  font-size: .72rem;
+  font-weight: 650;
+  font-family: var(--mono);
+}
+
+.nav-item.active .nav-num {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ---------- 开篇 ---------- */
+.section-hero { padding-top: 96px; }
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--ink-secondary);
+  margin-top: 0;
+}
+
+/* ---------- 主线步骤卡片 ---------- */
+.step-card {
+  margin: 2.5rem 0;
+  padding: 1.8rem 2rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  scroll-margin-top: 24px;
+}
+
+.step-card-sub {
+  margin-left: 2rem;
+  background: var(--bg-subtle);
+}
+
+/* ---------- 页脚 ---------- */
+.site-footer {
+  margin-top: 96px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  font-size: .88rem;
+  color: var(--ink-secondary);
+}
+
+/* ---------- 提示框：类比 / 关键点 / 出错自救 ---------- */
+.callout {
+  margin: 1.2rem 0;
+  padding: .9rem 1.1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: .95rem;
+}
+
+.callout-title {
+  display: block;
+  font-weight: 650;
+  font-size: .82rem;
+  letter-spacing: .05em;
+  margin-bottom: .3rem;
+}
+
+.callout-analogy { background: var(--accent-soft); border-color: #b6e3ff; }
+.callout-analogy .callout-title { color: var(--accent); }
+
+.callout-key { background: var(--orange-soft); border-color: #d4a72c66; }
+.callout-key .callout-title { color: var(--orange); }
+
+.callout-rescue { background: var(--red-soft); border-color: #ffcecb; }
+.callout-rescue .callout-title { color: var(--red); }
+
+.callout p:first-of-type { margin-top: 0; }
+.callout p:last-child { margin-bottom: 0; }
+
+/* ---------- 命令块与逐段拆解 ---------- */
+.cmd {
+  margin: 1rem 0;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.cmd pre {
+  margin: 0;
+  padding: .85rem 1.1rem;
+  overflow-x: auto;
+}
+
+.cmd code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: .92rem;
+  white-space: pre;
+}
+
+.cmd .comment { color: var(--ink-secondary); }
+
+/* ---------- 表格 ---------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: .93rem;
+  line-height: 1.6;
+}
+
+th, td {
+  padding: .55rem .8rem;
+  border: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+th { background: var(--bg-subtle); font-weight: 650; white-space: nowrap; }
+
+/* ---------- 步骤卡片内部结构 ---------- */
+.step-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: .6rem;
+}
+
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 8px;
+  border-radius: 20px;
+  background: var(--ink);
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 1.05rem;
+  font-weight: 650;
+  flex-shrink: 0;
+}
+
+.step-card-sub .step-num { background: var(--purple); }
+
+.step-head h3 { margin: 0; font-size: 1.35rem; }
+
+/* 团队可见性徽章：贯穿全程的线索 */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 12px;
+  border-radius: 14px;
+  font-size: .8rem;
+  font-weight: 650;
+  margin-left: auto;
+}
+
+.badge-local { background: var(--bg-subtle); color: var(--ink-secondary); border: 1px dashed var(--border); }
+.badge-visible { background: var(--green-soft); color: var(--green); border: 1px solid #aceebb; }
+.badge-mixed { background: var(--accent-soft); color: var(--accent); border: 1px solid #b6e3ff; }
+
+.step-goal {
+  font-size: .92rem;
+  color: var(--ink-secondary);
+  margin: .2rem 0 1rem;
+}
+
+.step-goal strong { color: var(--ink); }
+
+/* ---------- 深入折叠区 ---------- */
+details.deep-dive {
+  margin: .8rem 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+details.deep-dive summary {
+  padding: .7rem 1rem;
+  cursor: pointer;
+  font-weight: 650;
+  font-size: .95rem;
+  color: var(--accent);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  user-select: none;
+}
+
+details.deep-dive summary::before {
+  content: "▸";
+  transition: transform .15s;
+  font-size: .8em;
+}
+
+details.deep-dive[open] summary::before { transform: rotate(90deg); }
+
+details.deep-dive summary::-webkit-details-marker { display: none; }
+
+.deep-dive-body {
+  padding: .2rem 1.2rem 1rem;
+  border-top: 1px solid var(--border);
+  font-size: .95rem;
+}
+
+/* ---------- 全景地图：三层模型 ---------- */
+.layer-model {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 1.5rem 0;
+}
+
+.layer-box {
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: .9rem 1.2rem;
+  background: var(--bg);
+}
+
+.layer-box .layer-name { font-weight: 650; }
+.layer-box .layer-desc { font-size: .88rem; color: var(--ink-secondary); }
+
+.layer-box.layer-remote { border-color: var(--green); background: var(--green-soft); }
+.layer-box.layer-repo   { border-color: var(--accent); background: var(--accent-soft); }
+.layer-box.layer-work   { border-color: var(--orange); background: var(--orange-soft); }
+
+.layer-arrows {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  padding: .35rem 0;
+  font-size: .82rem;
+  font-family: var(--mono);
+  color: var(--ink-secondary);
+}
+
+.layer-arrows .up::before { content: "↑ "; }
+.layer-arrows .down::before { content: "↓ "; }
+
+/* ---------- 分支生命周期图（随滚动演化） ---------- */
+.lifecycle {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .6rem .9rem .1rem;
+  margin: 1rem 0 2.5rem;
+  box-shadow: 0 4px 12px rgba(31, 35, 40, .04);
+}
+
+.lifecycle svg { width: 100%; height: auto; display: block; }
+
+.lc-line { stroke-width: 2.5; fill: none; }
+.lc-main-line { stroke: #b7bfc7; }
+.lc-branch-line { stroke: var(--purple); }
+.lc-merge-in { stroke: var(--accent); stroke-dasharray: 5 4; }
+.lc-merge-out { stroke: var(--green); stroke-dasharray: 5 4; }
+
+.lc-commit { stroke-width: 2.5; }
+.lc-main { fill: #fff; stroke: #57606a; }
+.lc-feat { fill: #fff; stroke: var(--purple); }
+.lc-squash { fill: var(--green); stroke: var(--green); }
+
+.lc-label { font-size: 11px; fill: var(--ink-secondary); font-family: var(--mono); }
+.lc-branch-label { fill: var(--purple); font-weight: 650; }
+.lc-main-label { fill: #57606a; font-weight: 650; }
+
+.lc-tag { fill: var(--accent-soft); stroke: #b6e3ff; }
+.lc-tag-pr { fill: var(--orange-soft); stroke: #d4a72c; }
+.lc-tag-text { font-size: 11px; fill: var(--ink); }
+
+.lc-st { opacity: 0; transition: opacity .45s ease; }
+.lc-st.on { opacity: 1; }
+.lc-st.dim { opacity: .22; }
+
+.lc-caption {
+  margin: .35rem 0 .55rem;
+  font-size: .85rem;
+  color: var(--ink-secondary);
+  min-height: 1.6em;
+}
+
+/* ---------- 误区对照卡 ---------- */
+.miscon-card {
+  margin: 1.5rem 0;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.miscon-card .miscon-head {
+  padding: .6rem 1.1rem;
+  background: var(--bg-subtle);
+  border-bottom: 1px solid var(--border);
+  font-weight: 650;
+  font-size: .95rem;
+}
+
+.miscon-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.miscon-then, .miscon-fact { padding: .9rem 1.1rem; font-size: .92rem; }
+
+.miscon-then {
+  border-right: 1px solid var(--border);
+  background: var(--red-soft);
+}
+
+.miscon-fact { background: var(--green-soft); }
+
+.miscon-label {
+  display: block;
+  font-size: .78rem;
+  font-weight: 650;
+  letter-spacing: .05em;
+  margin-bottom: .35rem;
+}
+
+.miscon-then .miscon-label { color: var(--red); }
+.miscon-fact .miscon-label { color: var(--green); }
+
+.miscon-then blockquote {
+  margin: 0 0 .5rem;
+  padding-left: .8rem;
+  border-left: 3px solid var(--red);
+  color: var(--ink);
+  font-style: normal;
+}
+
+.miscon-then p, .miscon-fact p { margin: .4rem 0; }
+
+@media (max-width: 700px) {
+  .miscon-grid { grid-template-columns: 1fr; }
+  .miscon-then { border-right: none; border-bottom: 1px solid var(--border); }
+}
+
+/* ---------- 三条原则 ---------- */
+.principles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.principle-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  background: var(--bg-subtle);
+}
+
+.principle-card h4 { margin: 0 0 .5rem; font-size: 1rem; }
+.principle-card p { margin: 0; font-size: .88rem; color: var(--ink-secondary); }
+
+@media (max-width: 700px) {
+  .principles { grid-template-columns: 1fr; }
+}
+
+/* ---------- 历史形态 ASCII 图 ---------- */
+.history-shape {
+  font-family: var(--mono);
+  font-size: .85rem;
+  line-height: 1.7;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .9rem 1.1rem;
+  overflow-x: auto;
+  white-space: pre;
+  margin: 1rem 0;
+}
+
+/* ---------- 冲突标记示例 ---------- */
+.conflict-sample .marker { color: var(--red); font-weight: 650; }
+.conflict-sample .ours { background: var(--accent-soft); display: inline-block; width: 100%; }
+.conflict-sample .theirs { background: var(--purple); background: #fbefff; display: inline-block; width: 100%; }
+
+/* ---------- 冲突解决模拟器 ---------- */
+.conflict-sim {
+  margin-top: 1.2rem;
+  padding: 1rem 1.1rem;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  background: var(--bg-subtle);
+}
+
+.sim-title { font-weight: 650; margin: 0 0 .3rem; }
+.sim-desc { font-size: .9rem; color: var(--ink-secondary); margin: 0 0 .8rem; }
+
+.sim-choices { display: flex; gap: .6rem; flex-wrap: wrap; }
+
+.sim-choices button, .sim-reset {
+  padding: .45rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: .88rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.sim-choices button:hover, .sim-reset:hover { border-color: var(--accent); color: var(--accent); }
+
+.sim-choices button.chosen {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 650;
+}
+
+.sim-result { margin-top: 1rem; }
+.sim-result-label { font-size: .85rem; font-weight: 650; margin: .8rem 0 .3rem; }
+.sim-note { font-size: .88rem; color: var(--ink-secondary); margin: .5rem 0; }
+.sim-reset { margin-top: .5rem; }
+
+/* ---------- 合并策略切换器 ---------- */
+.strategy-tabs { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: .6rem; }
+
+.strategy-tabs button {
+  padding: .4rem .85rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  font-family: var(--mono);
+  font-size: .83rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.strategy-tabs button:hover { border-color: var(--accent); color: var(--accent); }
+
+.strategy-tabs button.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 650;
+}
+
+.strategy-switcher .history-shape { margin: .5rem 0; min-height: 4.5em; }
+.strategy-note { font-size: .9rem; color: var(--ink-secondary); margin: .5rem 0 0; }
+
+/* ---------- 术语标记与解释卡 ---------- */
+.term {
+  border-bottom: 1.5px dotted var(--accent);
+  cursor: help;
+  font-family: var(--mono);
+  font-size: .92em;
+}
+
+.term-tip {
+  position: fixed;
+  z-index: 100;
+  max-width: 340px;
+  padding: .7rem .9rem;
+  background: var(--ink);
+  color: #fff;
+  border-radius: 8px;
+  font-size: .85rem;
+  line-height: 1.65;
+  box-shadow: 0 8px 24px rgba(31, 35, 40, .2);
+  pointer-events: none;
+}
+
+.term-tip strong {
+  display: block;
+  margin-bottom: .2rem;
+  color: #9ecbff;
+  font-family: var(--mono);
+}
+
+/* ---------- 命令块复制按钮 ---------- */
+.cmd { position: relative; }
+
+.copy-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: .25rem .6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: .75rem;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .15s;
+}
+
+.cmd:hover .copy-btn, .copy-btn:focus { opacity: 1; }
+.copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ---------- 自测判断题 ---------- */
+.quiz-item {
+  margin: 1rem 0;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.quiz-q { margin: 0 0 .7rem; font-weight: 500; }
+
+.quiz-idx {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  border-radius: 12px;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  font-size: .78rem;
+  font-family: var(--mono);
+}
+
+.quiz-btns { display: flex; gap: .6rem; }
+
+.quiz-btns button {
+  padding: .4rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: .9rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+.quiz-item:not(.done) .quiz-btns button:hover { border-color: var(--accent); color: var(--accent); }
+
+.quiz-item.done .quiz-btns button { cursor: default; opacity: .55; }
+.quiz-item.done .quiz-btns button.right { opacity: 1; border-color: var(--green); background: var(--green-soft); color: var(--green); font-weight: 650; }
+.quiz-item.done .quiz-btns button.wrong { opacity: 1; border-color: var(--red); background: var(--red-soft); color: var(--red); font-weight: 650; }
+
+.quiz-why {
+  margin-top: .8rem;
+  padding: .7rem .9rem;
+  border-radius: 8px;
+  background: var(--bg-subtle);
+  font-size: .9rem;
+}
+
+.quiz-why strong { display: block; margin-bottom: .2rem; }
+
+.quiz-score {
+  margin-top: 1.5rem;
+  padding: .9rem 1.1rem;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  border: 1px solid #b6e3ff;
+  font-weight: 650;
+}
+
+/* ---------- 响应式：窄屏收起侧边栏 ---------- */
+@media (max-width: 960px) {
+  .progress-nav { display: none; }
+  .content { margin-left: 0; padding: 0 20px 60px; }
+}
+
+</style>
 </head>
 <body>
 
@@ -623,6 +1317,421 @@ git branch -d feat/login        <span class="comment"># 删本地分支</span></
 
   </main>
 
-  <script src="assets/app.js"></script>
+  <script>
+/* ============================================================
+   Git 标准开发流程教学站 · 交互逻辑
+   ============================================================ */
+
+/* ---------- 侧边进度条：滚动联动高亮 ----------
+   同时对外广播当前区块（sectionchange 事件），供分支生命周期图使用 */
+(function initScrollSpy() {
+  const navItems = document.querySelectorAll('.nav-item');
+  const targets = [];
+  let lastId = null;
+
+  navItems.forEach((item) => {
+    const el = document.getElementById(item.dataset.section);
+    if (el) targets.push({ el, item, id: item.dataset.section });
+  });
+
+  function highlight() {
+    // 取视口上沿 1/3 处所在的区块作为「当前」
+    const line = window.innerHeight / 3;
+    let current = targets[0];
+    for (const t of targets) {
+      if (t.el.getBoundingClientRect().top <= line) current = t;
+    }
+    navItems.forEach((n) => n.classList.remove('active'));
+    if (current) {
+      current.item.classList.add('active');
+      if (current.id !== lastId) {
+        lastId = current.id;
+        window.dispatchEvent(new CustomEvent('sectionchange', { detail: current.id }));
+      }
+    }
+  }
+
+  window.addEventListener('scroll', highlight, { passive: true });
+  window.addEventListener('resize', highlight);
+  highlight();
+})();
+
+/* ---------- 分支生命周期图：滚到哪一步，演化到哪一步 ---------- */
+(function initLifecycle() {
+  const container = document.getElementById('lifecycle');
+  if (!container) return;
+
+  const caption = document.getElementById('lc-caption');
+  const groups = Array.from(container.querySelectorAll('.lc-st')).map((g) => {
+    const m = g.className.baseVal.match(/lc-st-(\d+)/);
+    return { g, n: m ? Number(m[1]) : 0 };
+  });
+
+  const stageOfSection = {
+    'step-2': 1, 'step-3': 2, 'step-3-5': 3,
+    'step-4': 4, 'step-5': 5, 'step-6': 6, 'step-7': 7,
+  };
+
+  const captions = [
+    '开工前：主线上是全团队共享的历史',
+    '步骤 2：在最新 commit 上贴了一个新指针 feat/login——纯本地，团队看不见',
+    '步骤 3：封了两箱改动 f1、f2，仍然只在你电脑上',
+    '步骤 3.5：主线跑出了新 commit m4，把它合入自己的分支（f3），冲突在自己家里解',
+    '步骤 4：push 成功——云端出现同名分支，团队第一次看见你',
+    '步骤 5：PR 挂起，人工 review + CI 两道检查进行中',
+    '步骤 6：Squash 合并——你的三条 commit 在主线上压成一条',
+    '步骤 7：分支删除，主线继续前进，你回到干净状态',
+  ];
+
+  function setStage(stage) {
+    groups.forEach(({ g, n }) => {
+      g.classList.toggle('on', n <= stage);
+      // 收尾阶段：分支相关元素淡出，只留主线与合并结果
+      g.classList.toggle('dim', stage >= 7 && n <= 5);
+    });
+    caption.textContent = captions[stage];
+  }
+
+  window.addEventListener('sectionchange', (e) => {
+    const stage = stageOfSection[e.detail];
+    if (stage !== undefined) setStage(stage);
+    else if (['hero', 'map', 'step-1'].includes(e.detail)) setStage(0);
+    // 主线之后的区块不改变图的状态
+  });
+
+  setStage(0);
+})();
+
+/* ---------- 冲突解决模拟器 ---------- */
+(function initConflictSim() {
+  const sim = document.getElementById('conflict-sim');
+  if (!sim) return;
+
+  const result = document.getElementById('sim-result');
+  const resolved = document.getElementById('sim-resolved');
+  const note = document.getElementById('sim-note');
+  const buttons = sim.querySelectorAll('.sim-choices button');
+
+  const outcomes = {
+    ours: {
+      code: 'const timeout = 3000;',
+      note: '你裁决：维持主线的值。你的分支这次改动在这一处被放弃——这完全合法，冲突解决本来就允许「不采用自己的版本」。',
+    },
+    theirs: {
+      code: 'const timeout = 5000;',
+      note: '你裁决：采用自己的值。注意主线那边的 3000 被覆盖了——如果那是别人有意的改动，最好在 PR 里说一声为什么。',
+    },
+    both: {
+      code: 'const timeout = 4000;',
+      note: '你裁决：两个版本都不要，另写一个。这也是常见解法——冲突解决不是二选一，而是「编辑成最终想要的样子」。',
+    },
+  };
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const o = outcomes[btn.dataset.choice];
+      buttons.forEach((b) => b.classList.toggle('chosen', b === btn));
+      resolved.textContent = o.code;
+      note.textContent = o.note;
+      result.hidden = false;
+    });
+  });
+
+  document.getElementById('sim-reset').addEventListener('click', () => {
+    result.hidden = true;
+    buttons.forEach((b) => b.classList.remove('chosen'));
+  });
+})();
+
+/* ---------- 三种合并策略切换器 ---------- */
+(function initStrategySwitcher() {
+  const switcher = document.getElementById('strategy-switcher');
+  if (!switcher) return;
+
+  const shape = document.getElementById('strategy-shape');
+  const note = document.getElementById('strategy-note');
+  const tabs = switcher.querySelectorAll('.strategy-tabs button');
+
+  const strategies = {
+    merge: {
+      shape: '主线   ○──○─────────╮──●──○\n              ╰──○──○──╯\n你的分支   f1  f2  ↗',
+      note: '你的每一条 commit 都在，外加一个合并节点，分叉痕迹保留。适合想完整保留开发过程，或合并长期分支。',
+    },
+    squash: {
+      shape: '主线   ○──○──────●──────○\n                  ↑\n           f1+f2+f3 压成一条',
+      note: '你的 N 条 commit 被压成 1 条。最常见：一个 PR = 主线上一条记录，回头查「这个功能是哪次改的」时，一条记录比二十条零碎 commit 好用得多。',
+    },
+    rebase: {
+      shape: '主线   ○──○──●──●──●──○\n              f1  f2  f3 逐条接上，无分叉',
+      note: '你的 commit 逐条接到主线末尾，得到一条完全笔直的历史，但没有「这几条属于同一次 PR」的痕迹。',
+    },
+  };
+
+  function select(key) {
+    tabs.forEach((t) => t.classList.toggle('active', t.dataset.strategy === key));
+    shape.textContent = strategies[key].shape;
+    note.textContent = strategies[key].note;
+  }
+
+  tabs.forEach((t) => t.addEventListener('click', () => select(t.dataset.strategy)));
+  select('merge');
+})();
+
+/* ---------- 术语解释系统 ----------
+   词库是唯一数据源：正文自动标记 + 悬停解释卡 + 页尾名词对照表都从这里渲染 */
+const GLOSSARY = [
+  { en: 'pull',        zh: '拉取',     desc: '云端 → 本地：把远程仓库的最新历史抓回本地。每天开工第一件事。' },
+  { en: 'commit',      zh: '提交',     desc: '把暂存区的改动封箱成一条历史记录，附带「为什么改」的说明。只发生在你电脑上，团队看不见。' },
+  { en: 'push',        zh: '推送',     desc: '把本地分支上、云端还没有的 commit 传上去。push 之后团队才看得见你。' },
+  { en: 'merge',       zh: '合并',     desc: '把一条分支的改动缝进另一条分支。内部逻辑是三方比较，不是覆盖。' },
+  { en: 'branch',      zh: '分支',     desc: '指向某个 commit 的指针（一个 41 字节的小文件），不是代码副本。用于多人多需求并行、互不干扰。' },
+  { en: 'main',        zh: '主分支',   desc: '唯一的、受保护的正式版本线。没有人能直接往上写，所有改动必须走 PR。' },
+  { en: 'origin',      zh: '远程代号', desc: '远程仓库的默认代号——clone 时那个地址的别名。' },
+  { en: 'checkout',    zh: '检出',     desc: '切换到某条分支，工作目录里的文件会整体替换成那条分支的样子。' },
+  { en: 'clone',       zh: '克隆',     desc: '第一次把云端仓库（含完整历史）复制到本地。' },
+  { en: 'rebase',      zh: '变基',     desc: '把你的 commit 摘下来，重新接到别处（通常是主线末端）。会改写 commit ID——所以只能对还没分享出去的分支做。' },
+  { en: 'squash',      zh: '压缩合并', desc: '把 N 条零碎 commit 压成 1 条再进主线。最常见的 PR 合并策略。' },
+  { en: 'conflict',    zh: '冲突',     desc: '两边改了同一处、改法不同，Git 不替你猜，交人工裁决。是正常现象，不是错误。' },
+  { en: 'PR',          zh: '合并申请', desc: 'Pull Request（GitLab 叫 Merge Request）：「申请把我的支线并进主线」的工单，挂着人工 review 和 CI 两道检查。' },
+  { en: 'review',      zh: '人工评审', desc: '同事逐行看代码、留评论、提修改意见。PR 的第一道检查。' },
+  { en: 'CI',          zh: '持续集成', desc: '自动跑测试、构建、代码规范检查的机器人。PR 的第二道检查，全绿才能合并。' },
+  { en: 'lint',        zh: '规范检查', desc: '自动检查代码风格与常见问题的工具，CI 常跑的一项。' },
+  { en: 'fork',        zh: '派生',     desc: '把整个仓库复制一份到你名下。用于你没有原仓库写权限的场景（开源协作的标准姿势）。' },
+  { en: 'worktree',    zh: '多工作树', desc: '同一个本地仓库在硬盘上多开一个工作目录，两条分支同时摊开。效率技巧。' },
+  { en: 'HEAD',        zh: '当前位置', desc: '你此刻站在哪——当前检出的那条分支（或那个 commit）。冲突标记里的 HEAD 就是「你所在的这边」。' },
+];
+
+(function initGlossary() {
+  /* 1. 自动标记：把正文里出现的术语包上 .term（跳过代码块、标题、SVG 等） */
+  const SKIP = new Set(['PRE', 'CODE', 'SCRIPT', 'STYLE', 'SVG', 'BUTTON', 'H1', 'H2']);
+  const byLower = new Map(GLOSSARY.map((g) => [g.en.toLowerCase(), g]));
+  const pattern = new RegExp(
+    '\\b(' + GLOSSARY.map((g) => g.en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')\\b',
+    'g'
+  );
+
+  function walk(node) {
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      // SVG 元素的 tagName 是小写（如 'svg'），统一转大写后比对，
+      // 否则会深入分支图内部，把 <text> 里的 main、PR 换成 HTML span 而无法渲染
+      if (SKIP.has(node.tagName.toUpperCase()) || node.classList.contains('term')) return;
+      Array.from(node.childNodes).forEach(walk);
+      return;
+    }
+    if (node.nodeType !== Node.TEXT_NODE || !pattern.test(node.textContent)) return;
+    pattern.lastIndex = 0;
+
+    const frag = document.createDocumentFragment();
+    let rest = node.textContent;
+    let m;
+    let idx = 0;
+    pattern.lastIndex = 0;
+    while ((m = pattern.exec(rest)) !== null) {
+      frag.appendChild(document.createTextNode(rest.slice(idx, m.index)));
+      const span = document.createElement('span');
+      span.className = 'term';
+      span.tabIndex = 0;
+      span.dataset.term = m[1].toLowerCase();
+      span.textContent = m[1];
+      frag.appendChild(span);
+      idx = m.index + m[1].length;
+    }
+    frag.appendChild(document.createTextNode(rest.slice(idx)));
+    node.parentNode.replaceChild(frag, node);
+  }
+
+  walk(document.querySelector('.content'));
+
+  /* 2. 悬停 / 点按解释卡 */
+  const tip = document.createElement('div');
+  tip.className = 'term-tip';
+  tip.hidden = true;
+  document.body.appendChild(tip);
+
+  function show(termEl) {
+    const g = byLower.get(termEl.dataset.term);
+    if (!g) return;
+    tip.innerHTML = '<strong>' + g.en + ' · ' + g.zh + '</strong>' + g.desc;
+    tip.hidden = false;
+    const r = termEl.getBoundingClientRect();
+    const tw = tip.offsetWidth;
+    let left = r.left + r.width / 2 - tw / 2;
+    left = Math.max(12, Math.min(left, window.innerWidth - tw - 12));
+    tip.style.left = left + 'px';
+    const above = r.top > tip.offsetHeight + 16;
+    tip.style.top = (above ? r.top - tip.offsetHeight - 8 : r.bottom + 8) + 'px';
+  }
+
+  document.addEventListener('mouseover', (e) => {
+    const t = e.target.closest('.term');
+    if (t) show(t);
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest('.term')) tip.hidden = true;
+  });
+  document.addEventListener('focusin', (e) => {
+    const t = e.target.closest('.term');
+    if (t) show(t); else tip.hidden = true;
+  });
+  window.addEventListener('scroll', () => { tip.hidden = true; }, { passive: true });
+
+  /* 3. 页尾名词对照表：与词库同源渲染 */
+  const table = document.getElementById('glossary-table');
+  if (table) {
+    const tbody = table.querySelector('tbody');
+    GLOSSARY.forEach((g) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td><code>' + g.en + '</code></td><td>' + g.zh + '</td><td>' + g.desc + '</td>';
+      tbody.appendChild(tr);
+    });
+  }
+})();
+
+/* ---------- 命令块一键复制 ---------- */
+(function initCopyButtons() {
+  document.querySelectorAll('.cmd').forEach((box) => {
+    const pre = box.querySelector('pre');
+    if (!pre) return;
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'copy-btn';
+    btn.textContent = '复制';
+    box.appendChild(btn);
+
+    btn.addEventListener('click', () => {
+      // 复制时去掉注释，只留可执行的命令行
+      const text = pre.innerText
+        .split('\n')
+        .map((line) => line.replace(/\s*#.*$/, '').trimEnd())
+        .filter((line) => line.trim() !== '')
+        .join('\n');
+
+      const done = (ok) => {
+        btn.textContent = ok ? '✓ 已复制' : '复制失败';
+        setTimeout(() => { btn.textContent = '复制'; }, 1600);
+      };
+
+      // navigator.clipboard 仅在 HTTPS / localhost 可用；
+      // 本地 file:// 打开时降级为临时文本框 + execCommand
+      const fallbackCopy = () => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        let ok = false;
+        try { ok = document.execCommand('copy'); } catch (err) { ok = false; }
+        ta.remove();
+        done(ok);
+      };
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => done(true), fallbackCopy);
+      } else {
+        fallbackCopy();
+      }
+    });
+  });
+})();
+
+/* ---------- 自测判断题 ---------- */
+(function initQuiz() {
+  const list = document.getElementById('quiz-list');
+  if (!list) return;
+
+  const QUESTIONS = [
+    {
+      q: '「同步主分支，就是从云端下载一份最新的确认版文件，它由专人维护。」',
+      ok: false,
+      why: '拉下来的是整个仓库的完整历史（每条 commit、每条分支都在本地），这就是「分布式」。主分支也不是专人维护的，是靠 PR + review + CI 的流程保证的。',
+    },
+    {
+      q: '「新建分支主要是为了犯错时能兜底。」',
+      ok: false,
+      why: '兜底只是副产品。主要目的是隔离——多人多需求同时改同一个仓库，各写各的互不干扰。',
+    },
+    {
+      q: '「commit 之后，团队同事就能看到我的改动了。」',
+      ok: false,
+      why: 'commit 只动你自己的电脑。push 之后团队才看得见——这条分界线贯穿整个流程。',
+    },
+    {
+      q: '「新建分支是纯本地操作，断网也能做。」',
+      ok: true,
+      why: '正确。pull 时完整历史已经在本地了，开分支只是贴一个 41 字节的指针，不需要向云端要任何东西。',
+    },
+    {
+      q: '「push 之前，需要先把本地的分支合并一下再推。」',
+      ok: false,
+      why: 'push 不需要预先合并——它就是把你这条分支上的 commit 原样传上去。如果指的是把零碎 commit 压整齐，那叫 rebase / squash，跟 merge 是两回事。',
+    },
+    {
+      q: '「合并时，Git 会自动拿新版本覆盖旧版本。」',
+      ok: false,
+      why: 'Git 做的是三方比较：找到共同祖先，逐块对比三份内容。只有一边改的采用那一边；两边都改了同一块才报冲突、交人裁决。',
+    },
+    {
+      q: '「冲突说明有人操作失误了。」',
+      ok: false,
+      why: '冲突不是错误，是正常现象——两边改了同一处，机器不懂业务不敢猜，把决定权交给人。',
+    },
+    {
+      q: '「PR 要人工 review 和 CI 两道检查都通过，才能合并进主线。」',
+      ok: true,
+      why: '正确。这就是流程的质量闸门，也是 PM 在页面上就能看到需求卡在哪一环的原因。',
+    },
+    {
+      q: '「三种合并策略（Merge / Squash / Rebase）会导致最终代码内容不同。」',
+      ok: false,
+      why: '三种策略不影响最终代码内容，只影响主线历史的可读性——所以这是团队规范问题，不是技术问题。',
+    },
+  ];
+
+  let answered = 0;
+  let correct = 0;
+  const score = document.getElementById('quiz-score');
+
+  QUESTIONS.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-item';
+    card.innerHTML =
+      '<p class="quiz-q"><span class="quiz-idx">' + (i + 1) + '</span>' + item.q + '</p>' +
+      '<div class="quiz-btns">' +
+      '<button type="button" data-ans="true">对</button>' +
+      '<button type="button" data-ans="false">不对 / 有偏差</button>' +
+      '</div>' +
+      '<div class="quiz-why" hidden></div>';
+    list.appendChild(card);
+
+    const btns = card.querySelectorAll('button');
+    const why = card.querySelector('.quiz-why');
+
+    btns.forEach((b) => b.addEventListener('click', () => {
+      if (card.classList.contains('done')) return;
+      card.classList.add('done');
+
+      const isRight = (b.dataset.ans === 'true') === item.ok;
+      b.classList.add(isRight ? 'right' : 'wrong');
+      why.innerHTML =
+        '<strong>' + (isRight ? '✓ 判断正确。' : '✗ 再想想——') + '</strong>' + item.why;
+      why.hidden = false;
+
+      answered += 1;
+      if (isRight) correct += 1;
+      if (answered === QUESTIONS.length) {
+        score.textContent =
+          '全部答完：' + correct + ' / ' + QUESTIONS.length +
+          (correct === QUESTIONS.length
+            ? '。误区已扫清，可以开始第一个真实需求了。'
+            : '。答错的几条，回到上面对应的步骤和误区对照卡再看一眼。');
+        score.hidden = false;
+      }
+    }));
+  });
+})();
+
+</script>
 </body>
 </html>
