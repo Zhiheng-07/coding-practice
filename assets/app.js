@@ -264,3 +264,33 @@ const GLOSSARY = [
     });
   }
 })();
+
+/* ---------- 命令块一键复制 ---------- */
+(function initCopyButtons() {
+  document.querySelectorAll('.cmd').forEach((box) => {
+    const pre = box.querySelector('pre');
+    if (!pre) return;
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'copy-btn';
+    btn.textContent = '复制';
+    box.appendChild(btn);
+
+    btn.addEventListener('click', () => {
+      // 复制时去掉注释，只留可执行的命令行
+      const text = pre.innerText
+        .split('\n')
+        .map((line) => line.replace(/\s*#.*$/, '').trimEnd())
+        .filter((line) => line.trim() !== '')
+        .join('\n');
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = '✓ 已复制';
+        setTimeout(() => { btn.textContent = '复制'; }, 1600);
+      }).catch(() => {
+        btn.textContent = '复制失败';
+        setTimeout(() => { btn.textContent = '复制'; }, 1600);
+      });
+    });
+  });
+})();

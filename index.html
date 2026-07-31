@@ -578,6 +578,40 @@ git branch -d feat/login <span class="comment"># ④ 删掉本地分支</span></
     <!-- 页尾速查：命令清单 + 名词对照 -->
     <section id="reference" class="section">
       <h2>速查表</h2>
+
+      <p>亲自动手时照着这里走。所有命令块右上角都有「复制」按钮。</p>
+
+      <h3>全流程命令</h3>
+      <div class="cmd"><pre><code><span class="comment"># ── 开工 ──────────────────────────────</span>
+git checkout main               <span class="comment"># 切回主线</span>
+git pull                        <span class="comment"># 拉最新历史</span>
+git checkout -b feat/login      <span class="comment"># 新建并切换到功能分支</span>
+
+<span class="comment"># ── 开发中 ────────────────────────────</span>
+git status                      <span class="comment"># 看当前状态</span>
+git diff                        <span class="comment"># 看改了哪几行</span>
+git add .                       <span class="comment"># 全部挑进暂存区</span>
+git commit -m "修复登录接口超时"  <span class="comment"># 封箱，写清楚意图</span>
+git log --oneline --graph       <span class="comment"># 图形化看分支结构</span>
+
+<span class="comment"># ── 提交前 ────────────────────────────</span>
+git pull origin main            <span class="comment"># 吸收主线最新改动，本地解冲突</span>
+
+<span class="comment"># ── 推送 ──────────────────────────────</span>
+git push -u origin feat/login   <span class="comment"># 首次推送并绑定</span>
+git push                        <span class="comment"># 之后直接这样</span>
+
+<span class="comment"># ── 收尾（PR 合并之后）────────────────</span>
+git checkout main               <span class="comment"># 切回主线</span>
+git pull                        <span class="comment"># 把刚合入的内容拿下来</span>
+git branch -d feat/login        <span class="comment"># 删本地分支</span></code></pre></div>
+
+      <h3>名词对照</h3>
+      <p>正文里所有带虚线下划线的术语，汇总在这里（悬停正文术语也能看到同样的解释）：</p>
+      <table id="glossary-table">
+        <thead><tr><th>术语</th><th>中文</th><th>一句话解释</th></tr></thead>
+        <tbody></tbody>
+      </table>
     </section>
 
     <footer class="site-footer">

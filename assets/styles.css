@@ -601,6 +601,28 @@ details.deep-dive summary::-webkit-details-marker { display: none; }
   font-family: var(--mono);
 }
 
+/* ---------- 命令块复制按钮 ---------- */
+.cmd { position: relative; }
+
+.copy-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: .25rem .6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: .75rem;
+  color: var(--ink-secondary);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .15s;
+}
+
+.cmd:hover .copy-btn, .copy-btn:focus { opacity: 1; }
+.copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+
 /* ---------- 响应式：窄屏收起侧边栏 ---------- */
 @media (max-width: 960px) {
   .progress-nav { display: none; }
