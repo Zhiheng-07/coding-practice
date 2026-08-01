@@ -1532,513 +1532,421 @@ git branch -d feat/login        <span class="comment"># 删本地分支</span></
   <div class="module" id="module-mp">
 
   <nav class="progress-nav" aria-label="模块 02 页面导航">
-    <a href="#mp-hero" class="nav-item" data-section="mp-hero">开篇</a>
-    <a href="#mp-assess" class="nav-item" data-section="mp-assess">认知评估</a>
-    <div class="nav-group-label">完整链路八阶段</div>
-    <a href="#mp-p0" class="nav-item nav-step" data-section="mp-p0"><span class="nav-num">0</span>产品定义</a>
-    <a href="#mp-p1" class="nav-item nav-step" data-section="mp-p1"><span class="nav-num">1</span>账号与合规</a>
-    <a href="#mp-p2" class="nav-item nav-step" data-section="mp-p2"><span class="nav-num">2</span>技术方案</a>
-    <a href="#mp-p3" class="nav-item nav-step" data-section="mp-p3"><span class="nav-num">3</span>环境搭建</a>
-    <a href="#mp-p4" class="nav-item nav-step" data-section="mp-p4"><span class="nav-num">4</span>迭代开发</a>
-    <a href="#mp-p5" class="nav-item nav-step" data-section="mp-p5"><span class="nav-num">5</span>测试与调试</a>
-    <a href="#mp-p6" class="nav-item nav-step" data-section="mp-p6"><span class="nav-num">6</span>发布与审核</a>
-    <a href="#mp-p7" class="nav-item nav-step" data-section="mp-p7"><span class="nav-num">7</span>上线后</a>
-    <div class="nav-group-label">关键决策</div>
-    <a href="#mp-fork-a" class="nav-item" data-section="mp-fork-a">分叉 A · 后端形态</a>
-    <a href="#mp-fork-b" class="nav-item" data-section="mp-fork-b">分叉 B · 开发框架</a>
-    <a href="#mp-basics" class="nav-item" data-section="mp-basics">技术基础</a>
-    <a href="#mp-expert" class="nav-item" data-section="mp-expert">专家级代码</a>
-    <a href="#mp-miscon" class="nav-item" data-section="mp-miscon">误区对照</a>
+    <a href="#mp-hero" class="nav-item" data-section="mp-hero">开篇 · 三个坐标</a>
+    <a href="#mp-map" class="nav-item" data-section="mp-map">全流程总览</a>
+    <div class="nav-group-label">七个阶段</div>
+    <a href="#mp-s1" class="nav-item nav-step" data-section="mp-s1"><span class="nav-num">1</span>需求定义</a>
+    <a href="#mp-s2" class="nav-item nav-step" data-section="mp-s2"><span class="nav-num">2</span>技术方案</a>
+    <a href="#mp-s3" class="nav-item nav-step" data-section="mp-s3"><span class="nav-num">3</span>工程基建</a>
+    <a href="#mp-s4" class="nav-item nav-step" data-section="mp-s4"><span class="nav-num">4</span>迭代开发</a>
+    <a href="#mp-s5" class="nav-item nav-step" data-section="mp-s5"><span class="nav-num">5</span>质量保障</a>
+    <a href="#mp-s6" class="nav-item nav-step" data-section="mp-s6"><span class="nav-num">6</span>发布</a>
+    <a href="#mp-s7" class="nav-item nav-step" data-section="mp-s7"><span class="nav-num">7</span>运维与迭代</a>
+    <a href="#mp-rules" class="nav-item" data-section="mp-rules">十条军规</a>
     <a href="#mp-quiz" class="nav-item" data-section="mp-quiz">自测</a>
-    <a href="#mp-actions" class="nav-item" data-section="mp-actions">行动清单</a>
     <a href="#mp-reference" class="nav-item" data-section="mp-reference">术语表</a>
+    <a href="#mp-actions" class="nav-item" data-section="mp-actions">启动清单</a>
   </nav>
 
   <main class="content">
 
-    <!-- 开篇 -->
+    <!-- 开篇：三个坐标 -->
     <section id="mp-hero" class="section section-hero">
       <h1>微信小程序开发全流程</h1>
-      <p class="hero-subtitle">从想法到上线 · 面向要亲自动手的产品经理</p>
+      <p class="hero-subtitle">AI 产品经理的 Vibecoding 标准开发手册 · 对标大厂研发规范</p>
 
-      <p>你要开发一款微信小程序，并且希望写出的代码具备专家级水平。这个模块做两件事：先诚实地评估你现有的认知链路——哪些对、哪些缺、哪些偏；再把完整的链路一次讲清，包括你没听说过但躲不开的环节（认证、备案、隐私合规、微信审核），以及决定整条路怎么走的两个技术分叉。</p>
+      <p>这是一套可以直接照做的流程：场景是 Vibecoding（你提需求、做评审，AI 写代码），对标大厂标准研发规范，目标是产出专家级代码的微信小程序。动手前先立三个坐标，全书的每一条规则都从这三点推导出来。</p>
 
-      <div class="callout callout-analogy">
-        <span class="callout-title">贯穿全篇的核心类比</span>
-        <p><strong>开一家入驻商场的店。</strong>小程序不是独立 App，它开在「微信」这座商场里。商场要你先办入驻手续（注册、认证、备案），装修要用商场的规范（框架与组件），开业要过商场验收（微信审核），开业后商场还会持续巡查（线上监管）。理解了「你是租户，不是业主」，小程序的大多数特殊规则都能想通。</p>
-      </div>
-    </section>
+      <h3>坐标一：大厂为什么需要标准流程</h3>
+      <p>大厂的代码质量不是因为「人人都是高手」，而是因为<strong>每个环节都有闸门（Gate）</strong>：需求不过评审不启动开发，方案不过评审不写代码，代码不过 review 不进主干，版本不过验收不上线。个人能力有波动，闸门没有——<strong>质量是流程的产物，不是天赋的产物</strong>。这对你是好消息：你不需要先成为工程师，你需要的是把闸门立起来并守住它。</p>
 
-    <!-- 认知评估 -->
-    <section id="mp-assess" class="section">
-      <h2>你的认知评估</h2>
-
-      <p>先放上你的原话：</p>
-
-      <div class="miscon-card">
-        <div class="miscon-head">开题时的认知链路（原话）</div>
-        <div class="miscon-grid" style="grid-template-columns: 1fr;">
-          <div class="miscon-then" style="border-right: none;">
-            <blockquote>我现在的认知是需要了解小程序的框架规范，然后定义技术架构 - 技术选型 - 代码规范 - 代码编写 - 测试 - 改bug - 测试 - 服务器部署 - 上线。</blockquote>
-          </div>
-        </div>
-      </div>
-
-      <p>结论先行：<strong>主干方向正确，这已经超过多数零基础者的认知</strong>。但按真实交付标准逐项对照，是这样的：</p>
+      <h3>坐标二：Vibecoding 的角色分工</h3>
+      <p>Vibecoding 不是「AI 全自动，你等结果」。对照大厂研发团队的角色，这套流程里：</p>
 
       <table>
-        <thead><tr><th>你的环节</th><th>评估</th><th>说明</th></tr></thead>
+        <thead><tr><th>大厂角色</th><th>谁来当</th><th>具体做什么</th></tr></thead>
         <tbody>
-          <tr><td>了解框架规范</td><td>⚠️ 对，但时机偏</td><td>不需要「学完」再动手。跑通一个模板项目再按需查文档，比通读文档快得多（本仓库「边做边学」的理念在这里同样成立）</td></tr>
-          <tr><td>定义技术架构</td><td>✅ 对，但缺前置</td><td>架构之前还有一整段「产品定义」——PRD、页面清单、原型。你是 PM，这恰恰是你的主场，却被跳过了</td></tr>
-          <tr><td>技术选型</td><td>✅ 对，是关键环节</td><td>但你还不知道选型里有两个决定性分叉：<strong>后端形态</strong>（云开发 vs 自建服务器）和<strong>开发框架</strong>（原生 vs 跨端）。第一个分叉直接决定「服务器部署」这个环节存在还是消失</td></tr>
-          <tr><td>代码规范</td><td>✅ 对</td><td>而且它是「专家级代码」最重要的抓手之一——靠工具自动守护，不靠自觉</td></tr>
-          <tr><td>代码编写</td><td>✅ 对</td><td>但不是「一次写完」，而是按页面/功能小步迭代，每一步走模块 01 的分支-PR 流程</td></tr>
-          <tr><td>测试 → 改bug → 测试</td><td>⚠️ 方向对，形态偏</td><td>测试不是编码后的一个「阶段」，而是贯穿全程的动作；小程序还有自己特有的三级验证：模拟器 → 真机预览 → 体验版</td></tr>
-          <tr><td>服务器部署</td><td>⚠️ 取决于分叉</td><td>选云开发，这个环节整个消失（连同买服务器、域名、域名备案、HTTPS 配置）；选自建后端，它才存在</td></tr>
-          <tr><td>上线</td><td>⚠️ 严重简化</td><td>小程序的上线不是「部署完成」，而是<strong>提交微信审核 → 审核通过 → 手动发布</strong>。审核有明确的规则和常见拒审原因，是很多人第一次翻车的地方</td></tr>
-          <tr><td>（完全缺失）</td><td>❌ 头</td><td>需求定义、原型、UI 设计</td></tr>
-          <tr><td>（完全缺失）</td><td>❌ 合规线</td><td>账号注册、微信认证（年审制）、小程序备案、隐私保护指引——这条线不办完，代码写得再好也上不了线</td></tr>
-          <tr><td>（完全缺失）</td><td>❌ 尾</td><td>上线后的错误监控、数据分析、迭代循环——上线是起点不是终点</td></tr>
+          <tr><td>产品经理 PM</td><td><strong>你</strong></td><td>写 PRD、定验收标准、管需求池</td></tr>
+          <tr><td>技术负责人 Tech Lead</td><td><strong>你（评审位）+ AI（起草位）</strong></td><td>AI 起草技术方案，你评审拍板</td></tr>
+          <tr><td>工程师</td><td><strong>AI</strong></td><td>写代码、写测试、改 bug</td></tr>
+          <tr><td>代码评审人 Reviewer</td><td><strong>你（业务视角）+ 另开 AI 会话（技术视角）</strong></td><td>双通道 review，谁都不能既写又审</td></tr>
+          <tr><td>测试 QA</td><td><strong>你</strong></td><td>对着验收标准逐条验，真机上验</td></tr>
+          <tr><td>发布负责人</td><td><strong>你</strong></td><td>过发布 checklist，按了发布键就负责到底</td></tr>
         </tbody>
       </table>
 
-      <p>下面把修正后的完整链路铺开。注意两点：<strong>阶段 1（合规线）耗时最长且不依赖代码，要最早启动、并行推进</strong>；<strong>阶段 4→5 是反复循环，不是走一遍</strong>。</p>
+      <p>一句话：<strong>AI 是你的工程师团队，你是所有闸门的守门人</strong>。AI 产出的速度很快，流程的价值就是保证「快」不以「烂」为代价。</p>
 
-      <div class="history-shape">0 产品定义 → 1 账号与合规（并行启动）→ 2 技术方案 → 3 环境搭建
-                                          ┌──────────────┐
-                                → 4 迭代开发 ⇄ 5 测试与调试 │ 反复循环
-                                          └──────────────┘
-                                → 6 发布与审核 → 7 上线后 ──→ 回到 0，下一轮迭代</div>
-    </section>
-
-    <!-- 阶段 0 -->
-    <section id="mp-p0" class="section">
-      <div class="step-card">
-        <div class="step-head">
-          <span class="step-num">0</span>
-          <h3>产品定义</h3>
-          <span class="badge badge-mixed">你的主场</span>
-        </div>
-        <p class="step-goal"><strong>PRD · 页面清单 · 原型/UI</strong> —— 代码质量的上限在这里被决定</p>
-
-        <p>代码质量的上限在写第一行代码之前就被决定了。模糊的需求产出模糊的代码；清晰的 PRD 产出清晰的代码。作为 PM，这是你相对职业开发者的<strong>真实优势区</strong>。</p>
-
-        <p>对 AI 协作开发友好的 PRD 至少包含：</p>
-        <ul>
-          <li><strong>页面清单</strong>：一共几个页面、每个页面叫什么、页面之间怎么跳转（这会直接变成 <code>app.json</code> 里的路由配置）</li>
-          <li><strong>每个页面的字段与状态</strong>：展示什么数据、数据从哪来、空态/加载态/错误态长什么样</li>
-          <li><strong>边界情况</strong>：没网怎么办、没登录怎么办、列表为空怎么办——边界写得越全，AI 写出的代码越健壮</li>
-          <li><strong>验收标准</strong>：每个功能「怎样算做完了」，一条条可勾选</li>
-        </ul>
-
-        <p>UI 设计可以有两条路：有设计资源就出设计稿；没有就直接采用官方组件库（WeUI）或腾讯开源的 TDesign 小程序组件库——用现成组件库不丢人，<strong>一致性本身就是专业感的来源</strong>。</p>
+      <h3>坐标三：专家级代码的定义</h3>
+      <div class="callout callout-key">
+        <span class="callout-title">专家级代码五要素</span>
+        <p>一致的规范 × 清晰的结构 × 完整的边界处理 × 可读的历史 × 测试护栏。五项没有一项靠「背语法」，每一项都靠流程闸门保证——这正是这套手册七个阶段各自守住的东西。</p>
       </div>
     </section>
 
+    <!-- 全流程总览 -->
+    <section id="mp-map" class="section">
+      <h2>全流程总览</h2>
+
+      <div class="history-shape">阶段 1 需求定义 → 阶段 2 技术方案 → 阶段 3 工程基建 ┐
+                                                    │ 合规并行线（注册/认证/备案/隐私）
+        ┌───────────────────────────────────────────┘ 在阶段 3 启动，阶段 6 收口
+        ▼
+阶段 4 迭代开发 ⇄ 阶段 5 质量保障   （逐任务循环，全书核心）
+        ▼
+阶段 6 发布 → 阶段 7 线上运维与迭代 ──→ 回到阶段 1，下一版本</div>
+
+      <p>每个阶段的结构固定为五件套：<strong>目标 → 产物 → 分工（你做什么 / AI 做什么）→ 质量门禁 Gate → 模板/checklist</strong>。Gate 过不了就不进下一阶段，这是整套手册唯一需要意志力的地方。</p>
+      <p>所有模板块右上角都有「复制」按钮，可直接拿去用。</p>
+    </section>
+
     <!-- 阶段 1 -->
-    <section id="mp-p1" class="section">
+    <section id="mp-s1" class="section">
       <div class="step-card">
         <div class="step-head">
           <span class="step-num">1</span>
-          <h3>账号与合规</h3>
-          <span class="badge badge-wait">耗时最长 · 尽早启动</span>
+          <h3>需求定义</h3>
+          <span class="badge badge-mixed">对标：PRD 评审</span>
         </div>
-        <p class="step-goal"><strong>注册账号 → 微信认证 → 小程序备案 → 隐私保护指引</strong> —— 不写代码但躲不开的一条线</p>
+        <p class="step-goal"><strong>目标：把「想做什么」变成 AI 可以无歧义执行的规格 · 产物：开发版 PRD 一份</strong></p>
 
-        <p>这条线上每一项都有等待周期，所以要在写代码之前就启动。以下为 2026 年 8 月核对过的现状（政策会变，动手前以<a href="https://mp.weixin.qq.com" target="_blank" rel="noopener">微信公众平台</a>官方说明为准）：</p>
+        <p>Vibecoding 的第一性原理：<strong>PRD 即 prompt</strong>——写给 AI 的需求必须比写给人的更明确，因为 AI 不会走到工位旁问你「这里到底什么意思」，它会直接猜一个。</p>
 
-        <table>
-          <thead><tr><th>事项</th><th>要点</th><th>周期/费用</th></tr></thead>
-          <tbody>
-            <tr><td>注册小程序账号</td><td>在微信公众平台注册，拿到 AppID（小程序的身份证）。<strong>主体类型是第一个重大决定</strong>：个人主体无法开通微信支付、部分服务类目不开放；企业/个体工商户主体功能完整</td><td>免费，当天可完成</td></tr>
-            <tr><td>微信认证</td><td>已改为<strong>年审制</strong>：个人/个体工商户 30 元/年，企业 300 元/年。到期不年审会逐步影响发版、搜索、分享乃至新用户访问</td><td>数天</td></tr>
-            <tr><td>小程序备案</td><td>2023 年 9 月起<strong>强制</strong>：未备案的小程序无法上架。走微信公众平台内的备案流程，需先完成认证</td><td>通常 7–20 个工作日</td></tr>
-            <tr><td>用户隐私保护指引</td><td>只要你的小程序处理用户信息（头像、位置、手机号……），必须在后台填写隐私保护指引并通过平台审核。<strong>只有声明过的信息类型，对应接口才可调用</strong>；未声明直接禁用（开发时报错 errno 112 多半就是它）</td><td>1–2 天审核</td></tr>
-          </tbody>
-        </table>
+        <p><strong>分工</strong>：你起草 PRD；AI 当「反向质询者」——把 PRD 交给 AI，要求它以工程师身份挑出所有它需要猜测的地方，你逐条补明。</p>
+
+        <div class="cmd cmd-md"><pre><code># PRD：&lt;产品名&gt; v&lt;版本&gt;
+
+## 1. 一句话定位
+给&lt;谁&gt;用的&lt;什么&gt;，解决&lt;什么问题&gt;。
+
+## 2. 页面清单（会直接变成 app.json 的 pages 路由）
+| 页面 | 路径 | 入口来源 | 去向 |
+|---|---|---|---|
+| 首页 | pages/home | 启动默认 | →详情页 |
+
+## 3. 每个页面的规格（每页一节）
+### 页面：&lt;名称&gt;
+- 展示字段：&lt;字段名 / 来源 / 格式&gt;
+- 交互：&lt;点什么发生什么&gt;
+- 状态：加载中长什么样 / 空数据长什么样 / 出错长什么样
+- 边界：没网？没登录？数据超长？重复点击？
+
+## 4. 数据与权限
+- 需要收集的用户信息：&lt;无 / 昵称头像 / 位置…&gt;（决定隐私保护指引怎么填）
+- 是否涉及支付：&lt;是/否&gt;（个人主体开不了微信支付）
+
+## 5. 验收标准（AC）
+每条格式：「当&lt;前提&gt;时，&lt;操作&gt;，应&lt;结果&gt;」。可勾选，验收时逐条打勾。
+- [ ] 当首次打开时，进入首页，应在 2 秒内展示列表或空态
+- [ ] 当无网络时，下拉刷新，应提示「网络不可用」且不白屏
+
+## 6. 非目标（明确不做什么，防 AI 加戏）
+- 本版本不做：&lt;...&gt;</code></pre></div>
 
         <div class="callout callout-key">
-          <span class="callout-title">关键点</span>
-          <p>备案 7–20 个工作日什么概念？如果你写完代码才开始办，就是干等三周不能上线。所以专业做法是：<strong>第一天注册账号，第一周内启动认证和备案，让合规线和开发线并行跑</strong>。</p>
+          <span class="callout-title">Gate ✅ 需求评审</span>
+          <p>AI 反向质询后，你确认——① 每个页面的空态/错误态/边界都写了吗？② 每条 AC 都能客观判断对错吗（不含「体验好」这类词）？③ 非目标写了吗？三问全过，才进阶段 2。</p>
         </div>
       </div>
     </section>
 
     <!-- 阶段 2 -->
-    <section id="mp-p2" class="section">
+    <section id="mp-s2" class="section">
       <div class="step-card">
         <div class="step-head">
           <span class="step-num">2</span>
           <h3>技术方案</h3>
+          <span class="badge badge-mixed">对标：Design Doc / 技术评审</span>
         </div>
-        <p class="step-goal"><strong>架构分层 · 两大选型分叉 · 代码规范定型</strong></p>
+        <p class="step-goal"><strong>目标：写代码之前先把「怎么做」定死 · 产物：技术方案文档一份（选型用决策记录格式）</strong></p>
 
-        <p>一个小程序的架构其实只有两块：</p>
+        <p>大厂任何非平凡改动都要先出技术方案文档（Design Doc）过评审——Vibecoding 更要如此，否则 AI 每次会话都可能给你换一种做法。</p>
 
-        <div class="layer-model" aria-label="小程序架构两层模型">
-          <div class="layer-box layer-repo">
-            <span class="layer-name">小程序前端</span>
-            <span class="layer-desc"> —— 运行在用户微信里：页面、交互、展示（WXML + WXSS + JS）</span>
+        <p><strong>分工</strong>：你把 PRD 给 AI，要求产出技术方案并<strong>给出每个选型的取舍理由</strong>；你评审、追问、拍板。你不需要看懂每个技术名词，但每个决策的理由必须让 AI 讲到你懂。</p>
+
+        <div class="cmd cmd-md"><pre><code># 技术方案：&lt;产品名&gt; v&lt;版本&gt;
+
+## 1. 架构总览
+小程序前端（原生/跨端）＋ 后端（云开发/自建），一张图 + 三句话。
+
+## 2. 选型决策记录（每个重大选择一条）
+### 决策：&lt;后端形态 = 微信云开发&gt;
+- 背景：&lt;需求里哪些事实驱动了这个选择&gt;
+- 备选：&lt;自建服务器&gt;
+- 理由：&lt;门槛/成本/学习目标的权衡&gt;
+- 代价：&lt;绑定腾讯生态，迁出成本高&gt;
+
+## 3. 数据模型
+每个集合/表：字段、类型、含义、示例值。
+
+## 4. 接口清单
+每个接口：名称、入参、出参、失败时返回什么。
+
+## 5. 目录结构约定
+pages/ components/ utils/ services/（请求统一封装在这里）…
+AI 后续所有代码必须落在这个结构里。
+
+## 6. 不做的事
+本版本不引入：&lt;状态管理库/分包/…&gt;，理由：&lt;...&gt;</code></pre></div>
+
+        <h4>小程序的两大选型（决策记录里必须出现的两条）</h4>
+
+        <p><strong>后端形态：微信云开发 vs 自建服务器</strong>。云开发 = 免服务器（不用买服务器/域名、不用域名备案、不用配 HTTPS），代价是绑定腾讯生态；自建 = 完整自由和完整运维责任。判断用下面四问（答完给倾向参考）：</p>
+
+        <div class="decider" id="mp-decider">
+          <div class="dq" data-q="reuse">
+            <p>① 后端将来需要在微信生态之外复用吗（App / 网页共用一套后端）？</p>
+            <div class="dq-btns">
+              <button type="button" data-v="self">需要</button>
+              <button type="button" data-v="cloud">不需要 / 想不到场景</button>
+            </div>
           </div>
-          <div class="layer-arrows"><span class="down">网络请求</span><span class="up">返回数据</span></div>
-          <div class="layer-box layer-work">
-            <span class="layer-name">后端</span>
-            <span class="layer-desc"> —— 数据存哪、逻辑在哪、用户是谁 ← 这里就是第一个大分叉（见下文「关键决策」）</span>
+          <div class="dq" data-q="pay">
+            <p>② 涉及微信支付吗？（先确认主体：个人主体根本开不了支付）</p>
+            <div class="dq-btns">
+              <button type="button" data-v="none" data-pay="yes">涉及</button>
+              <button type="button" data-v="none" data-pay="no">不涉及</button>
+            </div>
           </div>
+          <div class="dq" data-q="scale">
+            <p>③ 预期用户量级？</p>
+            <div class="dq-btns">
+              <button type="button" data-v="cloud">前期几百到几千日活</button>
+              <button type="button" data-v="self">明确会很大（数万日活以上）</button>
+            </div>
+          </div>
+          <div class="dq" data-q="goal">
+            <p>④ 你当前的学习目标是？</p>
+            <div class="dq-btns">
+              <button type="button" data-v="cloud">先把产品做出来上线</button>
+              <button type="button" data-v="self">系统学完整后端知识</button>
+            </div>
+          </div>
+          <p class="decider-result" id="mp-decider-result" hidden></p>
         </div>
 
-        <p>选型定完之后，<strong>在写第一行业务代码之前</strong>把代码规范定死：ESLint（代码质量检查）+ Prettier（格式化）装好、规则文件放进仓库、配置保存时自动格式化。这一步五分钟，换来的是整个项目的代码风格由工具守护——这是「专家级代码」性价比最高的一笔投资。</p>
+        <p>倾向：Vibecoding 首个项目先云开发上线，自建后端留作后续专项。</p>
+
+        <p><strong>开发框架：原生 vs 跨端（uni-app/Taro）</strong>。判断只有一条：一年内有明确多端需求吗？没有 → 原生（文档最全、AI 语料最多、没有框架层 bug）。渲染引擎认知一句话：默认 WebView，新引擎 Skyline 性能更好（基础库 3.0.0 起正式可用、不支持自动回退），属优化项非必修课。</p>
+
+        <div class="callout callout-key">
+          <span class="callout-title">Gate ✅ 方案评审</span>
+          <p>① 方案能覆盖 PRD 每一个页面和 AC 吗（逐条对）？② 每条决策记录的理由你真的懂了吗？③ 数据模型能支撑下个版本的明显方向吗？④ 目录结构定了吗？过了才写第一行代码。</p>
+        </div>
       </div>
     </section>
 
     <!-- 阶段 3 -->
-    <section id="mp-p3" class="section">
+    <section id="mp-s3" class="section">
       <div class="step-card">
         <div class="step-head">
           <span class="step-num">3</span>
-          <h3>环境搭建</h3>
+          <h3>工程基建</h3>
+          <span class="badge badge-wait">合规并行线在此启动</span>
         </div>
-        <p class="step-goal"><strong>微信开发者工具 · 项目初始化 · Git 仓库</strong></p>
+        <p class="step-goal"><strong>目标：让「专家级」由工具和配置保证，而不是靠每次提醒 AI · 产物：可运行的模板项目 + 全套护栏配置</strong></p>
 
-        <p>小程序开发的官方 IDE 是<strong>微信开发者工具</strong>（macOS / Windows），集编辑器、模拟器、调试器、真机预览、代码上传于一身。装好它、用 AppID 新建模板项目、点开模拟器看到页面，环境就算通了。然后第一件事：<code>git init</code>，把模板项目作为第一个 commit——从此每个功能都走模块 01 的流程。</p>
+        <p>大厂新项目第一周都在搭基建，Vibecoding 同理——这半天投入决定后面每一天的代码质量下限。<strong>分工</strong>：AI 执行全部配置；你逐项验收「护栏真的会拦」。</p>
+
+        <div class="cmd cmd-md"><pre><code>## 工程基建 checklist
+- [ ] 微信开发者工具装好，AppID 建好模板项目，模拟器跑通
+- [ ] git init，模板项目为第一个 commit；远程仓库建好
+- [ ] 分支模型 = 模块 01 流程：main 受保护，每任务一分支一 PR，Squash 合并
+- [ ] commit 信息规范：&lt;type&gt;: &lt;中文意图&gt;（feat/fix/chore/docs）
+- [ ] ESLint + Prettier 配好，规则文件进仓库，保存自动格式化
+- [ ] 验收护栏：故意写一段烂格式代码，确认工具会报错/自动修复
+- [ ] 项目根建 CLAUDE.md：写入目录结构约定、规范要求、禁改范围
+      —— 这是 AI 的「入职培训手册」，每次会话自动生效
+- [ ] 环境认知对齐：模拟器=dev，真机预览=test，体验版=staging，正式版=prod</code></pre></div>
+
+        <h4>⚡ 合规并行线（不写代码但周期最长，与开发并行跑，阶段 6 收口）</h4>
+
+        <table>
+          <thead><tr><th>事项</th><th>要点</th><th>周期/费用（2026-08 核对，以官方为准）</th></tr></thead>
+          <tbody>
+            <tr><td>注册小程序账号</td><td>微信公众平台注册拿 AppID；<strong>主体类型是硬决定</strong>：个人主体无微信支付、部分类目不开放</td><td>免费，当天</td></tr>
+            <tr><td>微信认证</td><td>年审制：个人/个体户 30 元/年，企业 300 元/年；到期不审逐步影响发版/搜索/访问</td><td>数天</td></tr>
+            <tr><td>小程序备案</td><td>2023 年 9 月起强制，未备案不能上架；需先完成认证</td><td>7–20 个工作日</td></tr>
+            <tr><td>隐私保护指引</td><td>后台声明收集哪些用户信息；<strong>未声明的接口直接禁用</strong>（报错 errno 112 多为此）</td><td>1–2 天审核</td></tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-key">
+          <span class="callout-title">Gate ✅ 基建验收</span>
+          <p>checklist 全勾 + 合规线四项全部已启动。写完代码才办备案 = 干等三周不能上线。</p>
+        </div>
       </div>
     </section>
 
     <!-- 阶段 4 -->
-    <section id="mp-p4" class="section">
+    <section id="mp-s4" class="section">
       <div class="step-card">
         <div class="step-head">
           <span class="step-num">4</span>
           <h3>迭代开发</h3>
+          <span class="badge badge-mixed">全书核心 · 对标：Sprint + Code Review</span>
         </div>
-        <p class="step-goal"><strong>按页面/功能小步走，每步一个分支一个 PR</strong></p>
+        <p class="step-goal"><strong>目标：把 PRD 变成代码，且每一步都可控、可回溯、可验收 · 产物：一叠任务卡，每张卡一个分支一个 PR</strong></p>
 
-        <p>不要试图「把代码一次写完」。专业的节奏是：</p>
+        <p>原则：<strong>不存在「让 AI 把整个项目写完」这个动作</strong>，只存在一张一张任务卡。</p>
+
+        <h4>第一步：任务拆解</h4>
+        <p>把 PRD 拆成任务卡。拆分标准：一张卡 = 一个可独立验收的最小功能（如「首页列表展示」「下拉刷新」是两张卡）；一张卡的改动 AI 一次会话能高质量完成；卡之间标明依赖顺序。</p>
+
+        <h4>第二步：单任务 Vibecoding 循环（五步，每张卡走一遍）</h4>
+
+        <div class="cmd cmd-md"><pre><code># 任务：&lt;一句话&gt;
+- 背景：属于 PRD &lt;页面/功能&gt;，此前已完成 &lt;依赖项&gt;
+- 改动范围：预计涉及 &lt;目录/文件&gt;
+- 禁改范围：除上述外不得改动任何文件；不得改公共配置
+- 验收标准：（从 PRD 的 AC 复制对应条目）
+  - [ ] ...
+- 完成定义（DoD）见 DoD 清单</code></pre></div>
 
         <ol>
-          <li>从 PRD 里挑一个最小的完整功能（比如「首页列表展示」）</li>
-          <li>开一个分支（<code>feat/home-list</code>）</li>
-          <li>写完、在模拟器和真机上验证通过</li>
-          <li>提 PR、review、合并——这个功能就「落袋」了</li>
-          <li>回到 1，挑下一个</li>
+          <li><strong>写任务卡</strong>：按模板写清，特别是<strong>禁改范围</strong>——这是防止 AI「顺手重构」波及已验收功能的关键护栏</li>
+          <li><strong>AI 先复述后动手</strong>：要求 AI 先用三五句话复述它打算怎么做、动哪些文件，你确认后才开始写。方案对了再写，比写完再改便宜十倍</li>
+          <li><strong>对 AC 自测</strong>：AI 写完自查一遍，然后<strong>你</strong>在模拟器 + 真机上对着 AC 逐条勾。铁律：<strong>AI 说「我测试过了」不算数，以你亲手跑通为准</strong></li>
+          <li><strong>双通道 Code Review</strong>：你走「评审四问」（见下）；同时<strong>另开一个干净的 AI 会话</strong>（不带写代码时的上下文）做技术 review——写代码的 AI 不能审自己的代码，和大厂「作者不能自批 PR」同一个道理</li>
+          <li><strong>提 PR、合并</strong>：PR 描述写「做了什么 / 怎么验证」，走模块 01 流程 Squash 合并，删分支，下一张卡</li>
         </ol>
 
-        <p>每个 PR 小而完整，出问题能精确定位到某次改动，这就是模块 01 说的「分支要短命」在小程序开发里的样子。</p>
+        <div class="cmd cmd-md"><pre><code>## Code Review 四问（PM 不懂语法也能问）
+1. 结构：新代码放进了方案约定的目录吗？和之前的写法一致吗？
+2. 边界：AC 里的空态/无网/错误态，代码里都处理了吗？（让 AI 指给你看）
+3. 可读：变量和函数的命名，你能望文生义吗？
+4. 范围：diff 里有任务卡范围之外的改动吗？有就要求解释或撤掉</code></pre></div>
+
+        <div class="callout callout-key">
+          <span class="callout-title">Gate ✅ 完成定义（DoD）——一张卡满足全部条件才算「完成」</span>
+        </div>
+
+        <div class="cmd cmd-md"><pre><code>## DoD 清单
+- [ ] AC 逐条勾完（你亲手在真机验的）
+- [ ] 评审四问通过 + 交叉 AI review 的问题已处理
+- [ ] ESLint/Prettier 零报错
+- [ ] 不懂的代码不合并——已让 AI 把每处「看不懂」讲到你懂
+- [ ] PR 已 Squash 合并，分支已删</code></pre></div>
       </div>
     </section>
 
     <!-- 阶段 5 -->
-    <section id="mp-p5" class="section">
+    <section id="mp-s5" class="section">
       <div class="step-card">
         <div class="step-head">
           <span class="step-num">5</span>
-          <h3>测试与调试</h3>
+          <h3>质量保障</h3>
+          <span class="badge badge-visible">对标：测试金字塔 + 提测</span>
         </div>
-        <p class="step-goal"><strong>小程序特有的三级验证：模拟器 → 真机预览 → 体验版</strong></p>
+        <p class="step-goal"><strong>目标：让「改新功能不弄坏旧功能」有保障 · 测试不是一个阶段，是贯穿的护栏</strong></p>
+
+        <h4>测试金字塔在 Vibecoding 下的落地</h4>
 
         <table>
-          <thead><tr><th>层级</th><th>是什么</th><th>能验证什么</th><th>局限</th></tr></thead>
+          <thead><tr><th>层</th><th>大厂做法</th><th>你的做法</th></tr></thead>
           <tbody>
-            <tr><td><strong>模拟器</strong></td><td>开发者工具内置的仿真环境</td><td>日常开发的即时反馈：布局、逻辑、接口</td><td>和真机有差异：性能、部分 API 行为、键盘弹出等</td></tr>
-            <tr><td><strong>真机预览</strong></td><td>工具生成二维码，用自己微信扫码</td><td>真实手机上的表现</td><td>只有自己能看</td></tr>
-            <tr><td><strong>体验版</strong></td><td>上传代码后设为体验版，生成二维码，添加为「体验成员」的人都能用</td><td><strong>让真实用户在上线前试用</strong>——PM 最熟悉的内测环节</td><td>需要逐个添加体验成员</td></tr>
+            <tr><td><strong>单元测试（多）</strong></td><td>工程师写，CI 强制跑</td><td><strong>AI 写</strong>。你指定「哪些逻辑值得测」：工具函数、金额/时间计算、数据转换。每张涉及此类逻辑的卡，DoD 加一条「附带单测」</td></tr>
+            <tr><td><strong>集成测试（中）</strong></td><td>测试平台/接口自动化</td><td>云函数/接口用开发者工具的云函数本地调试逐个验</td></tr>
+            <tr><td><strong>端到端（少）</strong></td><td>QA 手工 + UI 自动化</td><td>三级验证：模拟器（dev）→ 真机预览（test）→ 体验版（staging，拉真实用户当内测）</td></tr>
           </tbody>
         </table>
 
-        <p>调试器（Console 看报错、Network 看请求、AppData 看页面数据）是你改 bug 的主战场。改 bug 的专业姿势不是「看到不对就乱改」，而是：先在调试器里定位到证据（哪个请求失败了、哪个数据不对），再改。</p>
+        <h4>Bug 处理规程（禁止「看到不对就让 AI 乱改」）</h4>
+
+        <div class="cmd cmd-md"><pre><code>## Bug 处理四步
+1. 复现：写下稳定复现步骤（设备/操作/数据），复现不了先补信息
+2. 定位：在调试器拿到证据——Console 报错原文 / Network 失败请求 / AppData 异常数据
+3. 修复：把「复现步骤 + 证据」原样给 AI（比「这里坏了帮我修」有效十倍），
+   修复走任务卡循环（可简化，但 review 不能省）
+4. 回归：验证 bug 修好 + 该功能的原 AC 重新勾一遍，确认没把别处修坏</code></pre></div>
+
+        <div class="callout callout-key">
+          <span class="callout-title">Gate ✅ 提测标准</span>
+          <p>一个版本的全部任务卡 DoD 达成 + 体验版上按 PRD 的 AC 全量过一遍 + 已知 bug 清零或明确挂起（记录原因），才进入发布。</p>
+        </div>
       </div>
     </section>
 
     <!-- 阶段 6 -->
-    <section id="mp-p6" class="section">
+    <section id="mp-s6" class="section">
       <div class="step-card">
         <div class="step-head">
           <span class="step-num">6</span>
-          <h3>发布与审核</h3>
-          <span class="badge badge-wait">审核 1–7 天</span>
+          <h3>发布</h3>
+          <span class="badge badge-wait">对标：发布评审 + 灰度 · 审核 1–7 天</span>
         </div>
-        <p class="step-goal"><strong>上传 → 提审 → 微信审核 → 发布</strong> —— 上线的真实形态</p>
+        <p class="step-goal"><strong>目标：把「上线」当成一个有闸门的流程，而不是一个按钮</strong></p>
 
-        <div class="history-shape">开发者工具点「上传」 → 后台出现开发版本 → 设为体验版（可选但强烈建议）
-→ 提交审核 → 微信审核（机器 + 人工，通常 1–7 天）
-→ 审核通过 → 手动点「发布」→ 全量发布 或 分阶段发布（先放量给部分用户）</div>
+        <div class="history-shape">体验版全量回归 → 合规线收口检查 → 开发者工具「上传」→ 提交审核
+→ 微信审核（机器+人工，通常 1–7 天）→ 审核通过 → 手动发布
+→ 优先「分阶段发布」（先放量部分用户，观察无异常再全量）</div>
 
-        <p>常见拒审原因，提前避开：</p>
-        <ul>
-          <li><strong>类目不符</strong>：小程序实际功能和注册时选的服务类目对不上</li>
-          <li><strong>隐私问题</strong>：实际收集的信息未在隐私保护指引中声明</li>
-          <li><strong>诱导行为</strong>：强制关注、诱导分享朋友圈才能使用</li>
-          <li><strong>iOS 虚拟支付</strong>：在 iPhone 上卖虚拟商品/会员（苹果规则，微信从严执行）</li>
-          <li><strong>无实质内容</strong>：页面空壳、大量「敬请期待」</li>
-        </ul>
+        <div class="cmd cmd-md"><pre><code>## 提审前 checklist（每轮审核要等几天，一次过 = 省一到两轮）
+- [ ] 类目相符：实际功能与注册类目一致
+- [ ] 隐私一致：实际收集的信息 = 隐私保护指引里声明的
+- [ ] 无诱导：没有强制关注/强制分享才能用
+- [ ] iOS 虚拟支付红线：iPhone 上不卖虚拟商品/会员
+- [ ] 无空壳：没有「敬请期待」占位页
+- [ ] 认证在有效期内、备案已通过</code></pre></div>
+
+        <p><strong>回滚预案</strong>：发布前想好「出大问题怎么办」。小程序的回滚 = 在后台将线上版本回退到上一版（分钟级生效），比 App 轻得多——但前提是你知道有这个按钮并且上一版是好的（这就是每版全量回归的意义）。</p>
 
         <div class="callout callout-key">
-          <span class="callout-title">关键点</span>
-          <p>审核被拒不是事故，是常态的一部分——被拒会附原因，改完重新提审即可。但每轮审核要等几天，所以<strong>第一次提审前把上面清单过一遍</strong>，能省一到两轮来回。</p>
+          <span class="callout-title">Gate ✅ 发布评审</span>
+          <p>提审清单全勾 + 回滚路径确认 + 发布后 24 小时你有时间盯监控，才按发布键。审核被拒不是事故：看拒因、修、重提。</p>
         </div>
       </div>
     </section>
 
     <!-- 阶段 7 -->
-    <section id="mp-p7" class="section">
+    <section id="mp-s7" class="section">
       <div class="step-card">
         <div class="step-head">
           <span class="step-num">7</span>
-          <h3>上线后</h3>
+          <h3>线上运维与迭代</h3>
+          <span class="badge badge-visible">对标：监控告警 + 复盘</span>
         </div>
-        <p class="step-goal"><strong>错误监控 · 数据分析 · 迭代循环</strong> —— 上线是起点</p>
+        <p class="step-goal"><strong>目标：上线是流程的回环点，不是终点</strong></p>
 
         <ul>
-          <li><strong>错误监控</strong>：微信后台自带运维中心（JS 报错、请求失败率报警）。用户不会告诉你「报错了」，他们只会流失</li>
-          <li><strong>数据分析</strong>：官方「小程序数据助手」看访问量、留存、页面路径——PM 的老本行</li>
-          <li><strong>迭代循环</strong>：收集反馈 → 回到阶段 0 改 PRD → 开发 → 提审发布。小程序的版本迭代比 App 轻得多（无应用商店分发、用户永远用最新版），适合小步快跑</li>
+          <li><strong>监控</strong>：微信后台「运维中心」看 JS 报错和请求失败率，配告警。用户不会报 bug，只会流失——报错数是你唯一的「用户投诉替代品」</li>
+          <li><strong>数据</strong>：「小程序数据助手」看访问/留存/页面路径——PM 老本行，用数据决定下一版做什么</li>
+          <li><strong>需求池</strong>：反馈和想法全部进需求池，攒到一个版本再走阶段 1，不做「顺手改一下就发」</li>
+          <li><strong>版本复盘</strong>（大厂叫 postmortem，每版发布后 15 分钟）：这一版哪个 bug 逃逸到了线上？它本应被哪个 Gate 拦住？那个 Gate 要不要加一条 checklist？——<strong>流程本身也要迭代</strong></li>
         </ul>
+
+        <div class="callout callout-key">
+          <span class="callout-title">Gate ✅ 迭代闸门</span>
+          <p>下一版本启动前，先完成上一版复盘并更新流程 checklist。</p>
+        </div>
       </div>
     </section>
 
-    <!-- 分叉 A -->
-    <section id="mp-fork-a" class="section">
-      <h2>分叉 A · 后端形态：微信云开发 vs 自建服务器</h2>
+    <!-- 十条军规 -->
+    <section id="mp-rules" class="section">
+      <h2>横切纪律 · Vibecoding 十条军规</h2>
 
-      <p>这是你整条认知链路里影响最大的一个决定——它决定「服务器部署」这个环节<strong>存在还是消失</strong>。</p>
+      <p>流程管阶段，军规管每一天。贴在手边：</p>
 
-      <p><strong>微信云开发（CloudBase）</strong>：腾讯提供的「免服务器」后端方案。数据库、文件存储、云函数（跑后端逻辑的地方）都是现成的，在开发者工具里直接用，<strong>不需要买服务器、不需要买域名、不需要域名备案、不需要配 HTTPS</strong>。</p>
-
-      <p><strong>自建服务器</strong>：传统方案。买云服务器 → 买域名 → 域名备案（又是数周）→ 配 HTTPS 证书（小程序强制要求所有请求走 HTTPS）→ 自己写后端程序 → 自己部署、自己运维。</p>
-
-      <table>
-        <thead><tr><th>维度</th><th>微信云开发</th><th>自建服务器</th></tr></thead>
-        <tbody>
-          <tr><td>前置门槛</td><td>无：勾选开通即用</td><td>服务器 + 域名 + 域名备案 + HTTPS，全套办完再开工</td></tr>
-          <tr><td>要学的东西</td><td>云函数写法（还是 JS）+ 数据库基本操作</td><td>Linux、后端框架、数据库、网络、部署、运维——一个完整技术栈</td></tr>
-          <tr><td>费用</td><td>2026 年起有免费体验环境（3000 资源点/月），但<strong>小程序发布后 15 天到期</strong>，长期使用需转付费套餐（个人版几十元/月量级）</td><td>服务器约 500–2000 元/年起 + 域名费；流量大了另算</td></tr>
-          <tr><td>能力边界</td><td>深度绑定腾讯/微信生态；后端逻辑迁出成本高</td><td>完全自由：后端可同时服务 App、网页、其他平台</td></tr>
-          <tr><td>运维责任</td><td>腾讯管机器，你只管代码</td><td>全部自己扛：安全补丁、宕机、备份</td></tr>
-          <tr><td>学习价值</td><td>学到「后端思维」（数据建模、接口设计），跳过「服务器运维」</td><td>学到完整后端知识，但战线很长</td></tr>
-        </tbody>
-      </table>
-
-      <h3>判断框架：用四个问题对照你的需求文档</h3>
-
-      <div class="decider" id="mp-decider">
-        <div class="dq" data-q="reuse">
-          <p>① 后端将来需要在微信生态之外复用吗（App / 网页共用一套后端）？</p>
-          <div class="dq-btns">
-            <button type="button" data-v="self">需要</button>
-            <button type="button" data-v="cloud">不需要 / 想不到场景</button>
-          </div>
-        </div>
-        <div class="dq" data-q="pay">
-          <p>② 涉及微信支付吗？（先确认主体：个人主体根本开不了支付）</p>
-          <div class="dq-btns">
-            <button type="button" data-v="none" data-pay="yes">涉及</button>
-            <button type="button" data-v="none" data-pay="no">不涉及</button>
-          </div>
-        </div>
-        <div class="dq" data-q="scale">
-          <p>③ 预期用户量级？</p>
-          <div class="dq-btns">
-            <button type="button" data-v="cloud">前期几百到几千日活</button>
-            <button type="button" data-v="self">明确会很大（数万日活以上）</button>
-          </div>
-        </div>
-        <div class="dq" data-q="goal">
-          <p>④ 你当前的学习目标是？</p>
-          <div class="dq-btns">
-            <button type="button" data-v="cloud">先把产品做出来上线</button>
-            <button type="button" data-v="self">系统学完整后端知识</button>
-          </div>
-        </div>
-        <p class="decider-result" id="mp-decider-result" hidden></p>
-      </div>
-
-      <div class="callout callout-key">
-        <span class="callout-title">倾向性建议（最终结论等结合你的需求文档再定）</span>
-        <p>以「无代码基础 + AI 协作开发 + 先跑通完整闭环」的画像，<strong>先云开发</strong>把产品做上线，把学习预算花在前端、产品打磨和流程实践上；完整后端知识作为后续独立模块（自建一次后端并部署）系统补课。两条路不冲突，是<strong>先后</strong>关系，不是<strong>二选一</strong>。</p>
-      </div>
-    </section>
-
-    <!-- 分叉 B -->
-    <section id="mp-fork-b" class="section">
-      <h2>分叉 B · 开发框架：原生小程序 vs 跨端框架</h2>
-
-      <ul>
-        <li><strong>原生开发</strong>：直接用微信的框架写。文档最全、社区语料最多（AI 生成质量最高）、没有框架层的额外 bug。代价：代码只能跑在微信小程序里</li>
-        <li><strong>跨端框架</strong>（uni-app、Taro）：用 Vue/React 语法写一份代码，编译到微信/支付宝/抖音小程序 + App + H5。代价：多一层抽象，遇到问题要分辨「是我的 bug 还是框架的 bug」，对新手是额外负担</li>
-      </ul>
-
-      <p><strong>判断标准只有一条</strong>：近期（一年内）有没有明确的多端需求？没有 → 原生。「以后也许要跨端」不算需求——真到那天，重写前端的成本远低于你现在为「也许」付出的复杂度。</p>
-
-      <div class="callout callout-analogy">
-        <span class="callout-title">渲染引擎一句话认知</span>
-        <p>小程序页面默认由 WebView（网页内核）渲染；微信推出的新引擎 <strong>Skyline</strong>（基础库 3.0.0 起正式可用）性能显著更好，官方数据启动耗时降约 17%、渲染耗时降约 50%，且不支持的环境会自动回退 WebView。新项目可以按页面粒度尝试，但这是优化项不是必修课——先跑通，再谈快。</p>
-      </div>
-    </section>
-
-    <!-- 技术基础 -->
-    <section id="mp-basics" class="section">
-      <h2>小程序技术基础：动手前的最小认知集</h2>
-
-      <h3>小程序不是网页，也不是 App</h3>
-      <p>它是<strong>运行在微信里的受管应用</strong>：微信提供运行环境和系统能力（登录、支付、位置……），你的代码在它的沙箱里跑。架构上是<strong>双线程</strong>：逻辑层（跑你的 JS）和渲染层（画界面）分开，两边靠 <code>setData</code> 传数据。现在只需要记住一个推论：<strong><code>setData</code> 传的数据越少越好</strong>——它是两个线程之间的桥，桥上堵车整个页面就卡。</p>
-
-      <h3>一个页面 = 四个文件</h3>
-      <table>
-        <thead><tr><th>文件</th><th>作用</th><th>类比</th></tr></thead>
-        <tbody>
-          <tr><td><code>.wxml</code></td><td>页面结构</td><td>HTML（但标签不同：<code>&lt;view&gt;</code>、<code>&lt;text&gt;</code>、<code>&lt;image&gt;</code>）</td></tr>
-          <tr><td><code>.wxss</code></td><td>页面样式</td><td>CSS（多一个 <code>rpx</code> 响应式单位：750rpx = 屏幕宽，不同手机自动换算）</td></tr>
-          <tr><td><code>.js</code></td><td>页面逻辑</td><td>数据、事件、请求都写这里</td></tr>
-          <tr><td><code>.json</code></td><td>页面配置</td><td>标题、导航栏颜色等</td></tr>
-        </tbody>
-      </table>
-      <p>项目根目录的 <code>app.json</code> 是全局配置——<strong>所有页面必须在这里的 <code>pages</code> 列表登记</strong>，这就是阶段 0 里「页面清单」直接落地的地方。</p>
-
-      <h3>基础库：决定你能用什么 API</h3>
-      <p>基础库是随用户微信客户端一起装着的小程序运行时。用户微信版本旧 → 基础库旧 → 新 API 不存在。专业做法：在后台看用户基础库版本分布，设一个最低兼容版本，低于它的用户提示升级微信。</p>
-
-      <h3>账号与用户体系</h3>
-      <ul>
-        <li><strong>AppID</strong>：小程序的身份证，注册时获得，开发、上传、调接口都要它</li>
-        <li><strong>openid</strong>：一个用户在你这个小程序里的唯一编号（同一个人在不同小程序里 openid 不同）</li>
-        <li><strong>unionid</strong>：同一主体多个应用（小程序 + 公众号 + App）之间认出同一个人用的编号</li>
-      </ul>
-      <p>「微信登录」的本质：不用注册不用密码，调登录接口拿到 openid，就完成了「识别用户」——这是小程序相对 App 最大的体验优势之一。</p>
-
-      <h3>能力地图</h3>
-      <p>微信登录、微信支付（企业主体）、订阅消息、分享卡片、地理位置、摄像头/相册……都是「在后台申请/声明 → 调对应 API」的模式。<strong>先声明后使用</strong>（尤其隐私相关接口），这个模式记住了，具体每个能力用到时查文档即可。</p>
-    </section>
-
-    <!-- 专家级代码 -->
-    <section id="mp-expert" class="section">
-      <h2>「专家级代码」对你意味着什么</h2>
-
-      <p>先破除一个误解：专家级代码<strong>不是</strong>「背熟语法、手写炫技」。看真实专业团队的标准，专家级代码 = 以下五件事的乘积，而这五件事在 AI 协作开发模式下，<strong>每一件你都有抓手</strong>：</p>
-
-      <table>
-        <thead><tr><th>专家级的构成</th><th>是什么</th><th>你的抓手</th></tr></thead>
-        <tbody>
-          <tr><td>一致的规范</td><td>命名、格式、目录结构全项目统一</td><td>ESLint + Prettier 自动守护（阶段 2 配好），零意志力成本</td></tr>
-          <tr><td>清晰的结构</td><td>页面归页面、组件归组件、请求统一封装、配置不散落</td><td>在 PRD 阶段就想清页面与组件的划分；要求 AI 遵循既定目录结构</td></tr>
-          <tr><td>边界处理</td><td>没网、超时、空数据、未授权……都有明确行为</td><td>你在 PRD 里写全边界 case，AI 才会处理它们——<strong>这直接由你的 PM 能力决定</strong></td></tr>
-          <tr><td>可读的历史</td><td>每个 commit/PR 小而完整、说明写清意图</td><td>模块 01 已经学完的整套流程</td></tr>
-          <tr><td>测试护栏</td><td>改动不破坏已有功能</td><td>三级验证（模拟器/真机/体验版）+ 每个 PR 的验证清单</td></tr>
-        </tbody>
-      </table>
-
-      <p><strong>AI 协作模式下你的三个角色</strong>：</p>
-      <div class="principles">
-        <div class="principle-card">
-          <h4>① 需求方</h4>
-          <p>把「做什么、边界在哪、怎样算完成」写清。需求质量 = 代码质量的上限。</p>
-        </div>
-        <div class="principle-card">
-          <h4>② 评审者</h4>
-          <p>review AI 产出。不必逐行懂语法，问四个问题：结构和之前一致吗？边界 case 处理了吗？命名能看懂吗？有没有重复代码？——能拦住大部分劣质代码。</p>
-        </div>
-        <div class="principle-card">
-          <h4>③ 流程守护者</h4>
-          <p>坚持每个功能走分支-PR-验证的循环，不因为「AI 写得快」就跳步。流程就是没有代码功底的人做出专家级工程的护栏。</p>
-        </div>
-      </div>
-
-      <div class="callout callout-key">
-        <span class="callout-title">关键点</span>
-        <p>「能跑」和「专家级」的差距不在写第一遍，而在第 10 次修改时——规范混乱、结构纠缠、没有边界处理的代码，每改一处都可能塌一处。你现在坚持的每一条规范，都是在给三个月后的自己降险。</p>
-      </div>
-    </section>
-
-    <!-- 误区对照 -->
-    <section id="mp-miscon" class="section">
-      <h2>误区对照</h2>
-
-      <p>下面四张卡片，左边是你开题原话里的表述（保留原文），右边是校正后的版本：</p>
-
-      <div class="miscon-card">
-        <div class="miscon-head">① 测试是编码之后的阶段吗？</div>
-        <div class="miscon-grid">
-          <div class="miscon-then">
-            <span class="miscon-label">原话</span>
-            <blockquote>……代码编写 - 测试 - 改bug - 测试……</blockquote>
-          </div>
-          <div class="miscon-fact">
-            <span class="miscon-label">实际</span>
-            <p>测试贯穿全程。每写完一个功能就在模拟器+真机验证（阶段 4 与 5 是循环，不是先后）；体验版让真实用户在上线前测；上线后的错误监控本质是永不停止的测试。</p>
-            <p>「编码全部完成后统一测试」是最容易堆积深层 bug 的做法。</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="miscon-card">
-        <div class="miscon-head">② 部署完就算上线了吗？</div>
-        <div class="miscon-grid">
-          <div class="miscon-then">
-            <span class="miscon-label">原话</span>
-            <blockquote>……服务器部署 - 上线。</blockquote>
-          </div>
-          <div class="miscon-fact">
-            <span class="miscon-label">实际</span>
-            <p>「服务器部署」是否存在取决于后端分叉——选云开发，这个环节连同买服务器/域名/备案/HTTPS 整体消失。</p>
-            <p>而「上线」不是部署动作，是<strong>审核流程</strong>：上传 → 提审 → 微信审核 1–7 天 → 手动发布。中间还横着一条你原来完全不知道的合规线（认证年审 + 小程序备案 + 隐私指引）。</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="miscon-card">
-        <div class="miscon-head">③ 要先学完框架规范再动手吗？</div>
-        <div class="miscon-grid">
-          <div class="miscon-then">
-            <span class="miscon-label">原话</span>
-            <blockquote>需要（先）了解小程序的框架规范（再动手）……</blockquote>
-          </div>
-          <div class="miscon-fact">
-            <span class="miscon-label">实际</span>
-            <p>框架规范按需学。装好开发者工具跑通模板项目只要一小时，此后每个概念都在真实上下文里学——和本仓库「边做边推进」的方法论一致。</p>
-            <p>通读文档再动手，通常读到一半就忘了前一半。</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="miscon-card">
-        <div class="miscon-head">④ 流程走完，项目就结束了吗？</div>
-        <div class="miscon-grid">
-          <div class="miscon-then">
-            <span class="miscon-label">原话</span>
-            <blockquote>……上线。（链路到此为止）</blockquote>
-          </div>
-          <div class="miscon-fact">
-            <span class="miscon-label">实际</span>
-            <p>上线是起点。没有监控和数据分析的小程序等于开了店不看营业额。</p>
-            <p>小程序无应用商店分发、全员即时更新的特性，恰恰是为「上线后小步快跑」设计的。</p>
-          </div>
-        </div>
-      </div>
+      <div class="cmd cmd-md"><pre><code>## Vibecoding 十条军规
+ 1. 一次只做一张卡——不对 AI 说「把这几个功能一起做了」
+ 2. 先方案后代码——AI 必须先复述打算怎么做，确认后才动手
+ 3. 禁改范围写死——每张任务卡明确「除此之外不许动」，防顺手重构
+ 4. AI 的「测过了」不算数——验收以你在真机上亲手跑通为准
+ 5. 不懂的代码不合并——让 AI 讲到你懂；讲不懂就重写到能讲懂
+ 6. 写的 AI 不审自己——review 用干净的新会话或另一个模型
+ 7. 小步提交——一张卡内也按「一个完整小步一个 commit」，出问题可回溯
+ 8. 规范交给工具——风格问题零人工讨论，ESLint/Prettier 说了算
+ 9. 每次会话产出落盘——结论进文档、代码进 commit，不依赖聊天记录
+10. 改流程不改口头——踩了坑就更新对应 checklist，让教训变成闸门</code></pre></div>
     </section>
 
     <!-- 自测 -->
     <section id="mp-quiz" class="section">
       <h2>自测一下</h2>
-      <p>下面这些说法，有的对、有的有偏差——其中几条正是开题认知里的原始理解。逐条判断，看看认知是否已经补齐：</p>
+      <p>下面这些说法，有的对、有的有偏差。逐条判断，看看这套流程的关键点是否已经立住：</p>
       <div id="mp-quiz-list"></div>
       <p class="quiz-score" id="mp-quiz-score" hidden></p>
-    </section>
-
-    <!-- 行动清单 -->
-    <section id="mp-actions" class="section">
-      <h2>下一步行动清单</h2>
-
-      <p>按依赖顺序排列，1–3 可以本周就做，互相不阻塞：</p>
-
-      <ol>
-        <li><strong>定主体类型</strong>（个人 or 企业）——查一下你的需求里有没有支付；个人主体开不了微信支付</li>
-        <li><strong>注册小程序账号</strong>：<a href="https://mp.weixin.qq.com" target="_blank" rel="noopener">mp.weixin.qq.com</a> → 拿到 AppID</li>
-        <li><strong>启动认证与备案</strong>——周期最长，最早启动（备案需先认证）</li>
-        <li><strong>装微信开发者工具</strong>，用 AppID 建模板项目，跑通模拟器</li>
-        <li><strong>把你的需求文档细化为开发版 PRD</strong>：页面清单、每页字段与状态、边界 case、验收标准</li>
-        <li><strong>拿着 PRD 定两大分叉</strong>（后端形态 + 开发框架）——建议下个 session 结合需求文档一起定，顺便把 ESLint/Prettier 配好</li>
-        <li><strong>进入迭代开发</strong>：每个功能一个分支一个 PR，模块 01 的流程从此进入日常</li>
-      </ol>
     </section>
 
     <!-- 术语表 -->
@@ -2051,8 +1959,21 @@ git branch -d feat/login        <span class="comment"># 删本地分支</span></
       </table>
     </section>
 
+    <!-- 启动清单 -->
+    <section id="mp-actions" class="section">
+      <h2>现在开始：启动清单</h2>
+
+      <ol>
+        <li><strong>本周并行</strong>：定主体类型 → <a href="https://mp.weixin.qq.com" target="_blank" rel="noopener">mp.weixin.qq.com</a> 注册拿 AppID → 启动认证 + 备案（合规线周期最长，最先点火）</li>
+        <li><strong>阶段 1</strong>：按 PRD 模板把你的需求文档改写成开发版 PRD，让 AI 反向质询一轮</li>
+        <li><strong>阶段 2</strong>：AI 起草技术方案，两大选型用决策记录拍板</li>
+        <li><strong>阶段 3</strong>：半天搭完基建，checklist 全勾</li>
+        <li><strong>之后</strong>：一张卡一张卡地走阶段 4–5 循环，直到提测 → 发布</li>
+      </ol>
+    </section>
+
     <footer class="site-footer">
-      <p>内容基于 2026-08-01 核对的公开政策与官方文档；认证费用、备案周期、云开发计费等时效信息以微信公众平台与腾讯云官方页面为准。</p>
+      <p>时效性信息（认证费用、备案周期、云开发计费、审核规则）基于 2026-08-01 核对，以微信公众平台与腾讯云官方页面为准。</p>
     </footer>
 
   </main>
@@ -2258,29 +2179,39 @@ const GLOSSARY = [
 
 /* 模块 02 · 小程序术语词库（与 GLOSSARY 合并用于正文标记与悬停卡，表格分模块渲染） */
 const GLOSSARY2 = [
-  { en: 'AppID',       zh: '小程序标识',     desc: '小程序的身份证，注册时获得。开发、上传代码、调接口都要它。' },
-  { en: 'WXML',        zh: '页面结构语言',   desc: '类比 HTML，但标签不同：<view>、<text>、<image>。' },
-  { en: 'WXSS',        zh: '页面样式语言',   desc: '类比 CSS，扩展了 rpx 响应式单位。' },
-  { en: 'rpx',         zh: '响应式单位',     desc: '750rpx = 一个屏幕宽度，不同尺寸手机自动换算。' },
-  { en: 'setData',     zh: '数据更新',       desc: '逻辑层向渲染层传数据的唯一通道。传的数据越少页面越流畅。' },
-  { en: '基础库',       zh: '小程序运行时',   desc: '随用户微信客户端一起分发，版本决定能用哪些 API。旧微信 = 旧基础库 = 新接口不存在。' },
-  { en: 'WebView',     zh: '网页渲染内核',   desc: '小程序页面的默认渲染方式。' },
-  { en: 'Skyline',     zh: '新渲染引擎',     desc: '微信自研渲染引擎，性能显著更好（基础库 3.0.0 起正式可用），不支持的环境自动回退 WebView。' },
-  { en: '云开发',       zh: 'CloudBase',     desc: '腾讯的免服务器后端：数据库、文件存储、云函数开箱即用，不用买服务器、域名，也不用域名备案。' },
-  { en: '云函数',       zh: 'Cloud Function', desc: '跑在云开发里的后端逻辑，用 JS 写，不用管服务器。' },
-  { en: 'openid',      zh: '用户标识',       desc: '一个用户在你这个小程序里的唯一编号（同一个人在不同小程序里 openid 不同）。' },
-  { en: 'unionid',     zh: '跨应用用户标识', desc: '同一主体的多个应用（小程序 + 公众号 + App）之间认出同一个人用的编号。' },
-  { en: '体验版',       zh: '内测版本',       desc: '上传代码后设为体验版，添加为体验成员的人扫码即可试用——上线前的真实用户内测。' },
-  { en: '微信认证',     zh: '年审',           desc: '主体资质核验，已改年审制：个人/个体工商户 30 元/年、企业 300 元/年。到期不审会逐步影响发版和访问。' },
-  { en: '备案',        zh: 'ICP 备案',       desc: '上网服务的官方登记。小程序自身要备案（2023 年 9 月起强制，约 7–20 个工作日）；自建服务器的域名另有独立的域名备案——是两回事。' },
-  { en: '隐私保护指引', zh: '隐私声明',       desc: '在后台声明你收集哪些用户信息。只有声明过的信息类型，对应接口才能调用；未声明直接禁用。' },
-  { en: 'PRD',         zh: '产品需求文档',   desc: 'Product Requirements Document：页面清单 + 字段与状态 + 边界 case + 验收标准。' },
-  { en: 'ESLint',      zh: '代码质量检查',   desc: '自动检查代码问题的工具，与 Prettier 搭配后规范由工具守护。' },
-  { en: 'Prettier',    zh: '代码格式化',     desc: '统一代码格式的工具，保存时自动整理，消灭风格争论。' },
-  { en: 'uni-app',     zh: '跨端框架',       desc: '用 Vue 语法写一份代码，编译到多个小程序平台 + App + H5。代价是多一层抽象。' },
-  { en: 'Taro',        zh: '跨端框架',       desc: '用 React 语法写一份代码编译到多端。代价同 uni-app。' },
-  { en: 'WeUI',        zh: '官方组件库',     desc: '微信官方 UI 组件库，风格与微信一致，开箱即用。' },
-  { en: 'TDesign',     zh: '腾讯组件库',     desc: '腾讯开源的企业级组件库，有小程序版本。' },
+  { en: 'Vibecoding',   zh: 'AI 协作开发',   desc: '你提需求做评审、AI 写代码的开发方式。质量取决于你的闸门，不是 AI 的语法。' },
+  { en: 'Gate',         zh: '质量门禁',       desc: '阶段出口的强制检查，过不了不进下一阶段。大厂质量的真正来源。' },
+  { en: 'AC',           zh: '验收标准',       desc: 'Acceptance Criteria：「当…时，…，应…」格式的可勾选判据，验收时逐条打勾。' },
+  { en: 'Design Doc',   zh: '技术方案文档',   desc: '写代码前先定「怎么做」：架构、数据模型、接口清单、目录约定，过评审再动工。' },
+  { en: '决策记录',      zh: 'ADR',           desc: '记录选型的背景/备选/理由/代价，半年后不用猜当时为什么这么选。' },
+  { en: 'CR',           zh: '代码评审',       desc: 'Code Review。本手册为双通道：你问业务四问 + 干净 AI 会话审技术。写的 AI 不审自己。' },
+  { en: 'DoD',          zh: '完成定义',       desc: 'Definition of Done：一张任务卡「做完」的客观清单，全勾才算完成。' },
+  { en: '测试金字塔',    zh: '分层测试',       desc: '单测多、集成中、端到端少的经典分层。Vibecoding 下单测由 AI 写、你定测什么。' },
+  { en: '灰度',         zh: '分阶段发布',     desc: '先放量给部分用户观察，无异常再全量。小程序后台原生支持。' },
+  { en: '回滚',         zh: '版本回退',       desc: '线上出大问题时退回上一版。小程序后台一键、分钟级——前提是上一版做过全量回归。' },
+  { en: '复盘',         zh: 'Postmortem',    desc: '每版发布后追问：逃逸的 bug 本应被哪个 Gate 拦住？把答案变成 checklist 新条目。' },
+  { en: 'PRD',          zh: '产品需求文档',   desc: '页面清单 + 规格 + 边界 + 验收标准。Vibecoding 里 PRD 即 prompt。' },
+  { en: 'AppID',        zh: '小程序标识',     desc: '小程序的身份证，注册时获得。开发、上传代码、调接口都要它。' },
+  { en: 'WXML',         zh: '页面结构语言',   desc: '类比 HTML，标签不同：view、text、image（对应 div/span/img）。' },
+  { en: 'WXSS',         zh: '页面样式语言',   desc: '类比 CSS，扩展了 rpx 响应式单位（750rpx = 一个屏幕宽度）。' },
+  { en: 'setData',      zh: '数据更新',       desc: '逻辑层向渲染层传数据的唯一通道。传的数据越少页面越流畅。' },
+  { en: '基础库',        zh: '小程序运行时',   desc: '随用户微信客户端一起分发，版本决定能用哪些 API。' },
+  { en: 'WebView',      zh: '网页渲染内核',   desc: '小程序页面的默认渲染方式。' },
+  { en: 'Skyline',      zh: '新渲染引擎',     desc: '微信自研，性能显著更好（基础库 3.0.0 起正式可用），不支持的环境自动回退 WebView。' },
+  { en: '云开发',        zh: 'CloudBase',     desc: '腾讯的免服务器后端：数据库、存储、云函数开箱即用，不用买服务器/域名，也不用域名备案。' },
+  { en: '云函数',        zh: 'Cloud Function', desc: '跑在云开发里的后端逻辑，用 JS 写，不用管服务器。' },
+  { en: 'openid',       zh: '用户标识',       desc: '一个用户在你这个小程序里的唯一编号。' },
+  { en: 'unionid',      zh: '跨应用用户标识', desc: '同一主体的多个应用（小程序 + 公众号 + App）之间认出同一个人。' },
+  { en: '体验版',        zh: '内测版本',       desc: '上传后设为体验版，体验成员扫码即用——相当于大厂的 staging 环境。' },
+  { en: '微信认证',      zh: '年审',           desc: '主体资质核验，年审制：个人/个体工商户 30 元/年、企业 300 元/年。到期不审影响发版和访问。' },
+  { en: '备案',         zh: 'ICP 备案',       desc: '上网服务的官方登记。小程序自身要备案（2023 年 9 月起强制，约 7–20 个工作日）；自建服务器的域名另有独立的域名备案。' },
+  { en: '隐私保护指引',  zh: '隐私声明',       desc: '在后台声明收集哪些用户信息。未声明的信息类型对应接口直接禁用（errno 112）。' },
+  { en: 'ESLint',       zh: '代码质量检查',   desc: '自动检查代码问题的工具，与 Prettier 搭配后规范由工具守护。' },
+  { en: 'Prettier',     zh: '代码格式化',     desc: '统一代码格式的工具，保存时自动整理，消灭风格争论。' },
+  { en: 'uni-app',      zh: '跨端框架',       desc: '用 Vue 语法写一份代码编译到多端。代价是多一层抽象。' },
+  { en: 'Taro',         zh: '跨端框架',       desc: '用 React 语法写一份代码编译到多端。代价同 uni-app。' },
+  { en: 'WeUI',         zh: '官方组件库',     desc: '微信官方 UI 组件库，风格与微信一致。一致性本身就是专业感的来源。' },
+  { en: 'TDesign',      zh: '腾讯组件库',     desc: '腾讯开源的企业级组件库，有小程序版本。' },
 ];
 
 
@@ -2389,12 +2320,14 @@ const GLOSSARY2 = [
     box.appendChild(btn);
 
     btn.addEventListener('click', () => {
-      // 复制时去掉注释，只留可执行的命令行
-      const text = pre.innerText
-        .split('\n')
-        .map((line) => line.replace(/\s*#.*$/, '').trimEnd())
-        .filter((line) => line.trim() !== '')
-        .join('\n');
+      // 命令块复制时去掉注释；模板块（cmd-md，内容本身含 # 标题）原样复制
+      const text = box.classList.contains('cmd-md')
+        ? pre.innerText.replace(/\s+$/, '')
+        : pre.innerText
+            .split('\n')
+            .map((line) => line.replace(/\s*#.*$/, '').trimEnd())
+            .filter((line) => line.trim() !== '')
+            .join('\n');
 
       const done = (ok) => {
         btn.textContent = ok ? '✓ 已复制' : '复制失败';
@@ -2525,53 +2458,53 @@ setupQuiz('quiz-list', 'quiz-score', [
 /* 模块 02 · 小程序自测题 */
 setupQuiz('mp-quiz-list', 'mp-quiz-score', [
   {
-    q: '「写完代码、部署到服务器，小程序就算上线了。」',
+    q: '「大厂的代码质量高，主要是因为工程师个个是高手。」',
     ok: false,
-    why: '小程序的上线是审核流程：上传代码 → 提交审核 → 微信审核（通常 1–7 天）→ 手动发布。而且「服务器部署」这个环节是否存在，取决于后端选云开发还是自建。',
+    why: '大厂质量的真正来源是闸门（Gate）：需求不过评审不开发、代码不过 review 不进主干、版本不过验收不上线。个人能力有波动，闸门没有——这也是没有代码功底的人能做出专家级工程的原因。',
   },
   {
-    q: '「选微信云开发，就不需要买服务器、买域名、做域名备案、配 HTTPS。」',
+    q: '「Vibecoding 里 AI 负责写代码，PRD 写得含糊一点没关系，AI 会来问清楚再动手。」',
+    ok: false,
+    why: 'AI 不会走到工位旁问你「这里什么意思」，它会直接猜一个。所以 PRD 即 prompt——写给 AI 的需求必须比写给人的更明确：状态、边界、验收标准一条不能少。',
+  },
+  {
+    q: '「让 AI 动手前先复述一遍方案，是浪费时间。」',
+    ok: false,
+    why: '方案对了再写，比写完再改便宜十倍。「先方案后代码」是十条军规之一：AI 先用三五句话复述打算怎么做、动哪些文件，你确认后才开始写。',
+  },
+  {
+    q: '「写代码的那个 AI 会话，不适合用来 review 自己写的代码。」',
     ok: true,
-    why: '正确。云开发是免服务器方案，数据库、存储、云函数开箱即用——这条分叉直接让「服务器部署」环节整体消失。但注意小程序自身的备案仍然要做，那是另一回事。',
+    why: '正确。和大厂「作者不能自批 PR」同一个道理——review 要用干净的新会话（不带写代码时的上下文）或另一个模型，加上你的评审四问，构成双通道 CR。',
   },
   {
-    q: '「小程序备案和认证可以等代码写完再办。」',
+    q: '「AI 说『我已经测试通过』，这张任务卡就可以合并了。」',
     ok: false,
-    why: '备案通常要 7–20 个工作日，认证也要数天。写完代码再办 = 干等数周不能上线。专业做法是第一周就启动合规线，和开发线并行跑。',
+    why: 'AI 的「测过了」不算数——验收以你在模拟器和真机上对着 AC 逐条亲手勾完为准。这是 DoD 清单的第一条。',
   },
   {
-    q: '「个人主体的小程序开不了微信支付。」',
+    q: '「单元测试在 Vibecoding 里由 AI 来写，但『测什么』由你指定。」',
     ok: true,
-    why: '正确。这是主体类型的硬限制，也是为什么「定主体类型」排在行动清单第一条——如果需求里有支付，从一开始就要用企业或个体工商户主体。',
+    why: '正确。测试金字塔落地方式：AI 写单测，你指定值得测的逻辑（工具函数、金额/时间计算、数据转换）；集成靠云函数本地调试，端到端靠三级验证。',
   },
   {
-    q: '「测试是编码完成之后的一个阶段。」',
+    q: '「一张任务卡应该越大越好，让 AI 一次多做点，效率高。」',
     ok: false,
-    why: '测试贯穿全程：每写完一个功能就在模拟器 + 真机验证，体验版让真实用户上线前试用，上线后的错误监控是永不停止的测试。攒到最后统一测，深层 bug 最多。',
+    why: '相反：一张卡 = 一个可独立验收的最小功能，且明确禁改范围。卡越大，AI 顺手重构波及已验收功能的风险越高，review 和回溯也越难。不存在「让 AI 把整个项目写完」这个动作。',
   },
   {
-    q: '「只做微信小程序、近期没有多端需求，选原生开发比跨端框架更合适。」',
+    q: '「小程序发布后发现严重问题，可以在后台一键回退到上一个版本。」',
     ok: true,
-    why: '正确。原生文档最全、AI 语料最多、没有框架层的额外 bug。「以后也许要跨端」不算需求——真到那天再重写，成本低于现在为「也许」付出的复杂度。',
+    why: '正确，分钟级生效，比 App 轻得多。但前提是上一版是好的——这就是每个版本发布前都要在体验版做全量回归的意义。',
   },
   {
-    q: '「没有代码基础，就不可能做出专家级的工程。」',
-    ok: false,
-    why: '专家级 = 规范（工具守护）× 结构 × 边界处理 × 可读历史 × 测试护栏。在 AI 协作模式下，这五件事分别对应 PRD 质量、评审四问和流程纪律——每一件都是 PM 能力，不是语法能力。',
-  },
-  {
-    q: '「审核被拒说明项目出了大问题。」',
-    ok: false,
-    why: '被拒是常态的一部分，会附原因，改完重新提审即可。真正的成本是每轮要等几天——所以第一次提审前先过一遍常见拒审清单（类目、隐私、诱导、iOS 虚拟支付、空壳内容）。',
-  },
-  {
-    q: '「上线之后，这个项目就做完了。」',
-    ok: false,
-    why: '上线是起点：错误监控、数据分析、用户反馈 → 回到产品定义，进入下一轮迭代。小程序全员即时更新的特性，恰恰是为上线后小步快跑设计的。',
+    q: '「版本复盘的核心问题是：逃逸到线上的 bug，本应被哪个 Gate 拦住。」',
+    ok: true,
+    why: '正确。复盘不是追责，是给流程打补丁：找到失守的闸门，往对应 checklist 加一条——让教训变成闸门，流程本身也要迭代。',
   },
 ],
-'。认知已补齐，可以去走行动清单的第一条了。',
-'。答错的几条，回到上面对应的阶段和分叉再看一眼。');
+'。流程已立住，去走启动清单吧。',
+'。答错的几条，回到对应阶段的 Gate 再看一眼。');
 
 /* ---------- 模块 02 · 后端形态决策参考 ---------- */
 (function initDecider() {
