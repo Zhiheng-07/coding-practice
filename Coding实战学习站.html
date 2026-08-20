@@ -911,6 +911,7 @@ details.rd-node summary { display: flex; align-items: center; gap: .55rem; }
     <a href="#hero" class="nav-item" data-section="hero">开篇</a>
     <a href="#map" class="nav-item" data-section="map">全景地图</a>
     <div class="nav-group-label">一次需求的旅程</div>
+    <a href="#step-0" class="nav-item nav-step" data-section="step-0"><span class="nav-num">0</span>项目初始化</a>
     <a href="#step-1" class="nav-item nav-step" data-section="step-1"><span class="nav-num">1</span>同步主分支</a>
     <a href="#step-2" class="nav-item nav-step" data-section="step-2"><span class="nav-num">2</span>新建分支</a>
     <a href="#step-3" class="nav-item nav-step" data-section="step-3"><span class="nav-num">3</span>本地开发</a>
@@ -987,6 +988,97 @@ details.rd-node summary { display: flex; align-items: center; gap: .55rem; }
     <!-- 主线：七步流程，每步一个 step-card -->
     <section id="journey" class="section">
       <h2>一次需求的完整旅程</h2>
+
+      <article id="step-0" class="step-card">
+        <div class="step-head">
+          <span class="step-num">0</span>
+          <h3>项目初始化</h3>
+          <span class="badge badge-mixed">视起点而定</span>
+        </div>
+        <p class="step-goal">在七步旅程能跑起来之前，先让「本地」和「远程」两头都存在，并且互相认识 · 完成标志：<strong>本地有一个 .git 仓库，远程有一个对应仓库，两者已关联</strong></p>
+
+        <p>七步旅程默认「仓库已经 clone 好了」。但一个全新项目要先走完这一步，才轮得到步骤 1。走法取决于你的起点：</p>
+
+        <table>
+          <thead>
+            <tr><th>起点</th><th>走法</th><th>关键命令</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>本地已有文件夹，远程还没建</td><td>本地先 init，后建远程再关联</td><td><code>git init</code> → 建远程 → <code>git remote add</code></td></tr>
+            <tr><td>远程已建好空仓库，本地从零开始</td><td>直接 clone</td><td><code>git clone</code></td></tr>
+            <tr><td>两头都没有，想一条命令搞定</td><td>gh CLI 一次建好</td><td><code>gh repo create --source=. --push</code></td></tr>
+          </tbody>
+        </table>
+
+        <p><strong>场景一：本地已有文件夹，远程还没建</strong></p>
+
+        <div class="cmd"><pre><code>cd my-project              <span class="comment"># 进入你要初始化的文件夹</span>
+git init                   <span class="comment"># 纯本地操作，跟用不用 AI 编程工具无关</span>
+<span class="comment"># 在第一次 commit 之前先建好 .gitignore（见下方深入）</span>
+git add .
+git commit -m "init: 项目初始化"
+git branch -M main         <span class="comment"># 对齐默认分支名（见下方深入）</span></code></pre></div>
+
+        <p>然后去 GitHub 网页新建一个仓库——<strong>不要勾选「Add a README file」</strong>（原因见下方深入），拿到仓库地址后：</p>
+
+        <div class="cmd"><pre><code>git remote add origin &lt;仓库网址&gt;   <span class="comment"># 告诉本地仓库「云端总稿在哪」</span>
+git push -u origin main            <span class="comment"># 首次推送并绑定</span></code></pre></div>
+
+        <details class="deep-dive">
+          <summary>深入：git remote add 在做什么？</summary>
+          <div class="deep-dive-body">
+            <p><code>git remote add origin &lt;url&gt;</code> 只做一件事：在本地仓库里记一笔「origin 这个代号指向哪个云端地址」。它不传输任何文件，纯粹是登记一个地址条目。真正的文件搬运发生在下一条 <code>git push</code> 里。</p>
+          </div>
+        </details>
+
+        <details class="deep-dive">
+          <summary>深入：为什么不能勾「Add a README file」？</summary>
+          <div class="deep-dive-body">
+            <p>勾选后，GitHub 会在远程仓库里自动生成一个初始 commit；而本地这边，<code>git commit</code> 也已经产生了一个初始 commit。两边各有一条独立的历史、没有共同祖先，直接 <code>git push</code> 会被拒绝。要么远程建仓库时不勾（推荐，最省事），要么用 <code>git pull origin main --allow-unrelated-histories</code> 强行让两条历史相认（见场景二）。</p>
+          </div>
+        </details>
+
+        <details class="deep-dive">
+          <summary>深入：README 到底是什么？</summary>
+          <div class="deep-dive-body">
+            <p>README 不是「每个文件都有」的东西，而是仓库<strong>根目录下的一份特定文件</strong>（README.md），一个仓库通常只有一份，写给人看的说明书——项目是做什么的、怎么装、怎么跑起来。GitHub 会自动把它渲染在仓库首页，这也是为什么感觉「每个项目都有」——不是 Git 强制，是约定俗成。它会随项目迭代持续更新，改法和改任何文件一样走 add / commit / push，没有特殊流程；也不跟着分支或功能走，除非你的改动恰好碰了这个文件，否则合并时不会牵扯到它。</p>
+          </div>
+        </details>
+
+        <details class="deep-dive">
+          <summary>深入：.gitignore 为什么要在第一次 commit 之前建？</summary>
+          <div class="deep-dive-body">
+            <p><code>.gitignore</code> 告诉 Git「这些文件/文件夹不要纳入版本管理」（比如 node_modules、编译产物、本地密钥）。如果先 commit 再补 <code>.gitignore</code>，那些文件已经被 Git 记录进历史了，光加规则不会把它们从历史里抹掉，还得额外执行取消跟踪的操作。正确顺序：建文件夹 → 写 <code>.gitignore</code> → 第一次 add + commit。</p>
+          </div>
+        </details>
+
+        <details class="deep-dive">
+          <summary>深入：默认分支名为什么要对齐？</summary>
+          <div class="deep-dive-body">
+            <p>GitHub 网页新建仓库时，默认分支名是 <code>main</code>；但本地 <code>git init</code> 出来的分支名，在较旧的 Git 版本上默认是 <code>master</code>，两边对不上。<code>git branch -M main</code> 把本地分支强制改名成 <code>main</code>，对齐远程。如果本地 Git 版本较新、或已执行过 <code>git config --global init.defaultBranch main</code>，<code>git init</code> 出来就直接是 <code>main</code>，可以跳过这一步——但不能假设所有环境都配置过，第一次全新初始化保险起见都过一遍。</p>
+          </div>
+        </details>
+
+        <p><strong>场景二：远程已建好空仓库，本地从零开始</strong></p>
+
+        <div class="cmd"><pre><code>git clone &lt;仓库网址&gt;</code></pre></div>
+
+        <div class="callout callout-key">
+          <span class="callout-title">这里最容易多走的一步弯路是 fork</span>
+          <p>fork 解决的问题是「你没有这个仓库的写权限」（详见步骤 2 深入）。但这个场景里仓库是你自己或团队建的，你本来就是 owner 或协作者，天生有写权限，不需要 fork 这道中间手续。fork 只用在「给别人的开源项目提代码，但自己没有写权限」的场景。</p>
+        </div>
+
+        <p>若本地文件夹已经先写了点东西（不是从零 clone），事后才想关联到这个远程空仓库：</p>
+
+        <div class="cmd"><pre><code>git remote add origin &lt;仓库网址&gt;
+git pull origin main --allow-unrelated-histories   <span class="comment"># 双方历史没有共同祖先时才需要这个参数</span></code></pre></div>
+
+        <p><strong>场景三：gh CLI 一条命令搞定</strong></p>
+
+        <div class="cmd"><pre><code>gh repo create my-project --private --source=. --remote=origin --push</code></pre></div>
+
+        <p>等价于「网页建空仓库 + <code>git remote add origin</code> + <code>git push -u origin main</code>」三步的合并版：<code>--source=.</code> 表示拿当前文件夹内容作为仓库源，<code>--remote=origin</code> 指定关联的远程代号，<code>--push</code> 表示建完立刻推送。</p>
+      </article>
 
       <!-- 分支生命周期图：随滚动逐步演化 -->
       <div class="lifecycle" id="lifecycle" aria-label="分支生命周期示意图">
@@ -1493,7 +1585,7 @@ git branch -d feat/login <span class="comment"># ④ 删掉本地分支</span></
     <section id="misconceptions" class="section">
       <h2>误区对照</h2>
 
-      <p>下面四张卡片，左边是学习过程中一次真实复述里出现的理解（保留原话），右边是校正后的版本。这几处偏差非常典型——第一遍学 Git 的人几乎都会这么想。</p>
+      <p>下面几张卡片，左边是学习过程中两次真实复述里出现的理解（保留原话），右边是校正后的版本。这几处偏差非常典型——第一遍学 Git 的人几乎都会这么想。</p>
 
       <div class="miscon-card">
         <div class="miscon-head">① pull 拉下来的是什么？</div>
@@ -1554,6 +1646,50 @@ git branch -d feat/login <span class="comment"># ④ 删掉本地分支</span></
           </div>
         </div>
       </div>
+
+      <div class="miscon-card">
+        <div class="miscon-head">⑤ README 是什么？</div>
+        <div class="miscon-grid">
+          <div class="miscon-then">
+            <span class="miscon-label">当时的理解</span>
+            <blockquote>不知道每个项目文件都有 README file，勾选「Add a README file」与否也不清楚。</blockquote>
+          </div>
+          <div class="miscon-fact">
+            <span class="miscon-label">实际</span>
+            <p>README 不是「每个文件都有」的东西，而是仓库<strong>根目录下唯一一份</strong>写给人看的说明文件。</p>
+            <p>勾不勾「Add a README file」的真实后果是：远程仓库刚建好有没有一个初始 commit——这直接决定后面能不能顺利关联本地已有的历史（见步骤 0）。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="miscon-card">
+        <div class="miscon-head">⑥ 远程已有空仓库，本地要怎么进去？</div>
+        <div class="miscon-grid">
+          <div class="miscon-then">
+            <span class="miscon-label">当时的理解</span>
+            <blockquote>从 GitHub 这个远程仓库点击 Fork 到自己的账号，然后克隆到本地进行开发。</blockquote>
+          </div>
+          <div class="miscon-fact">
+            <span class="miscon-label">实际</span>
+            <p><strong>fork 解决的问题是「你没有这个仓库的写权限」</strong>。仓库是自己或团队建的、天生有写权限时，不需要 fork，直接 <code>git clone</code> 就够了。</p>
+            <p>fork 只用在「给别人的开源项目提代码，但自己没有写权限」的场景。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="miscon-card">
+        <div class="miscon-head">⑦ git init 要在哪一步敲？</div>
+        <div class="miscon-grid">
+          <div class="miscon-then">
+            <span class="miscon-label">当时的理解</span>
+            <blockquote>不确定是要进 Claude Code 前敲还是 cd 打开文件夹就敲。</blockquote>
+          </div>
+          <div class="miscon-fact">
+            <span class="miscon-label">实际</span>
+            <p><code>git init</code> 是纯终端操作，只在乎你当前站在哪个文件夹，跟用不用 AI 编程工具没有任何关系。</p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- 自测：判断题 -->
@@ -1571,7 +1707,15 @@ git branch -d feat/login <span class="comment"># ④ 删掉本地分支</span></
       <p>亲自动手时照着这里走。所有命令块右上角都有「复制」按钮。</p>
 
       <h3>全流程命令</h3>
-      <div class="cmd"><pre><code><span class="comment"># ── 开工 ──────────────────────────────</span>
+      <div class="cmd"><pre><code><span class="comment"># ── 起手（项目从零到一，只做一次）──────</span>
+git init                                                <span class="comment"># 本地已有文件夹，远程还没建</span>
+git branch -M main                                      <span class="comment"># 对齐默认分支名</span>
+git remote add origin &lt;仓库网址&gt;                         <span class="comment"># 关联远程</span>
+git push -u origin main                                 <span class="comment"># 首次推送</span>
+git clone &lt;仓库网址&gt;                                      <span class="comment"># 远程已建好空仓库，一步到位</span>
+gh repo create my-project --private --source=. --push   <span class="comment"># gh CLI 一条命令搞定</span>
+
+<span class="comment"># ── 开工 ──────────────────────────────</span>
 git checkout main               <span class="comment"># 切回主线</span>
 git pull                        <span class="comment"># 拉最新历史</span>
 git checkout -b feat/login      <span class="comment"># 新建并切换到功能分支</span>
@@ -5166,7 +5310,7 @@ AI 后续所有代码必须落在这个结构里。
   window.addEventListener('sectionchange', (e) => {
     const stage = stageOfSection[e.detail];
     if (stage !== undefined) setStage(stage);
-    else if (['hero', 'map', 'step-1'].includes(e.detail)) setStage(0);
+    else if (['hero', 'map', 'step-0', 'step-1'].includes(e.detail)) setStage(0);
     // 主线之后的区块不改变图的状态
   });
 
@@ -5271,6 +5415,10 @@ const GLOSSARY = [
   { en: 'fork',        zh: '派生',     desc: '把整个仓库复制一份到你名下。用于你没有原仓库写权限的场景（开源协作的标准姿势）。' },
   { en: 'worktree',    zh: '多工作树', desc: '同一个本地仓库在硬盘上多开一个工作目录，两条分支同时摊开。效率技巧。' },
   { en: 'HEAD',        zh: '当前位置', desc: '你此刻站在哪——当前检出的那条分支（或那个 commit）。冲突标记里的 HEAD 就是「你所在的这边」。' },
+  { en: 'init',        zh: '初始化',   desc: '让当前文件夹变成一个 Git 仓库，生成隐藏的 .git 目录，开始记录历史。纯本地操作，跟用不用 AI 编程工具无关。' },
+  { en: 'remote',      zh: '远程关联', desc: 'git remote add 在本地仓库里登记「某个代号（如 origin）对应哪个云端地址」，不传输任何文件。' },
+  { en: 'README',      zh: '说明文件', desc: '仓库根目录下的一份特定文件（README.md），一个仓库通常只有一份，写给人看的说明书。会随项目迭代持续更新。' },
+  { en: '.gitignore',  zh: '忽略清单', desc: '告诉 Git 哪些文件/文件夹不纳入版本管理，需在第一次 commit 之前建好，否则已入历史的文件不会被自动清除。' },
 ];
 
 /* 模块 02 · 小程序术语词库（与 GLOSSARY 合并用于正文标记与悬停卡，表格分模块渲染） */
