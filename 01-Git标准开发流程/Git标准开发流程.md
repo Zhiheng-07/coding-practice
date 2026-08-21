@@ -37,6 +37,79 @@
 
 ## 二、一次需求的完整旅程（七步）
 
+### 步骤 0 · 项目初始化 ｜ 视起点而定
+
+**在七步旅程能跑起来之前，先让「本地」和「远程」两头都存在，并且互相认识 · 完成标志：本地有一个 `.git` 仓库，远程有一个对应仓库，两者已关联**
+
+七步旅程默认「仓库已经 clone 好了」。但一个全新项目要先走完这一步，才轮得到步骤 1。走法取决于你的起点：
+
+| 起点 | 走法 | 关键命令 |
+|---|---|---|
+| 本地已有文件夹，远程还没建 | 本地先 init，后建远程再关联 | `git init` → 建远程 → `git remote add` |
+| 远程已建好空仓库，本地从零开始 | 直接 clone | `git clone` |
+| 两头都没有，想一条命令搞定 | gh CLI 一次建好 | `gh repo create --source=. --push` |
+
+**场景一：本地已有文件夹，远程还没建**
+
+```bash
+cd my-project              # 进入你要初始化的文件夹
+git init                   # 纯本地操作，跟用不用 AI 编程工具无关
+# 在第一次 commit 之前先建好 .gitignore（见下方深入）
+git add .
+git commit -m "init: 项目初始化"
+git branch -M main         # 对齐默认分支名（见下方深入）
+```
+
+然后去 GitHub 网页新建一个仓库——**不要勾选「Add a README file」**（原因见下方深入），拿到仓库地址后：
+
+```bash
+git remote add origin <仓库网址>   # 告诉本地仓库「云端总稿在哪」
+git push -u origin main            # 首次推送并绑定
+```
+
+**深入：`git remote add` 在做什么？**
+
+`git remote add origin <url>` 只做一件事：在本地仓库里记一笔「`origin` 这个代号指向哪个云端地址」。它不传输任何文件，纯粹是登记一个地址条目。真正的文件搬运发生在下一条 `git push` 里。
+
+**深入：为什么不能勾「Add a README file」？**
+
+勾选后，GitHub 会在远程仓库里自动生成一个初始 commit；而本地这边，上面第 5 行 `git commit` 也已经产生了一个初始 commit。两边各有一条独立的历史、没有共同祖先，直接 `git push` 会被拒绝。要么远程建仓库时不勾（推荐，最省事），要么用 `git pull origin main --allow-unrelated-histories` 强行让两条历史相认（见场景二）。
+
+**深入：README 到底是什么？**
+
+README 不是「每个文件都有」的东西，而是仓库**根目录下的一份特定文件**（`README.md`），一个仓库通常只有一份，写给人看的说明书——项目是做什么的、怎么装、怎么跑起来。GitHub 会自动把它渲染在仓库首页，这也是为什么感觉「每个项目都有」——不是 Git 强制，是约定俗成。它会随项目迭代持续更新，改法和改任何文件一样走 add / commit / push，没有特殊流程；也不跟着分支或功能走，除非你的改动恰好碰了这个文件，否则合并时不会牵扯到它。
+
+**深入：`.gitignore` 为什么要在第一次 commit 之前建？**
+
+`.gitignore` 告诉 Git「这些文件/文件夹不要纳入版本管理」（比如 `node_modules`、编译产物、本地密钥）。如果先 commit 再补 `.gitignore`，那些文件已经被 Git 记录进历史了，光加规则不会把它们从历史里抹掉，还得额外执行取消跟踪的操作。正确顺序：建文件夹 → 写 `.gitignore` → 第一次 `add` + `commit`。
+
+**深入：默认分支名为什么要对齐？**
+
+GitHub 网页新建仓库时，默认分支名是 `main`；但本地 `git init` 出来的分支名，在较旧的 Git 版本上默认是 `master`，两边对不上。`git branch -M main` 把本地分支强制改名成 `main`，对齐远程。如果本地 Git 版本较新、或已执行过 `git config --global init.defaultBranch main`，`git init` 出来就直接是 `main`，可以跳过这一步——但不能假设所有环境都配置过，第一次全新初始化保险起见都过一遍。
+
+**场景二：远程已建好空仓库，本地从零开始**
+
+```bash
+git clone <仓库网址>
+```
+
+一步到位。**这里最容易多走的一步弯路是 fork**——fork 解决的问题是「你没有这个仓库的写权限」（详见步骤 2 深入）。但这个场景里仓库是你自己或团队建的，你本来就是 owner 或协作者，天生有写权限，不需要 fork 这道中间手续。fork 只用在「给别人的开源项目提代码，但自己没有写权限」的场景。
+
+若本地文件夹已经先写了点东西（不是从零 clone），事后才想关联到这个远程空仓库：
+
+```bash
+git remote add origin <仓库网址>
+git pull origin main --allow-unrelated-histories   # 双方历史没有共同祖先时才需要这个参数
+```
+
+**场景三：gh CLI 一条命令搞定**
+
+```bash
+gh repo create my-project --private --source=. --remote=origin --push
+```
+
+等价于「网页建空仓库 + `git remote add origin` + `git push -u origin main`」三步的合并版：`--source=.` 表示拿当前文件夹内容作为仓库源，`--remote=origin` 指定关联的远程代号，`--push` 表示建完立刻推送。
+
 ### 步骤 1 · 同步主分支 ｜ 本地 ↔ 云端
 
 **把云端主线的最新历史抄回本地 · 完成标志：本地 main 和远程一致**
@@ -368,7 +441,7 @@ git branch -d feat/login # ④ 删掉本地分支
 
 ## 四、误区对照（真实复述 vs 实际）
 
-以下四处偏差来自一次真实的学习复述，第一遍学 Git 的人几乎都会这么想：
+以下七处偏差来自两次真实的学习复述，第一遍学 Git 的人几乎都会这么想：
 
 **① pull 拉下来的是什么？**
 
@@ -394,11 +467,37 @@ git branch -d feat/login # ④ 删掉本地分支
 
 实际：push 之前**不需要合并本地分支**。push 就是把这串 commit 原样传到云端。如果「整理」指的是把零碎 commit 压成整齐的几条，那个动作叫 **rebase / squash**，跟 merge 是两回事。
 
+**⑤ README 是什么？**
+
+> 当时的理解：「不知道每个项目文件都有 README file，勾选『Add a README file』与否也不清楚。」
+
+实际：README 不是「每个文件都有」的东西，而是仓库**根目录下唯一一份**写给人看的说明文件。勾不勾「Add a README file」的真实后果是：远程仓库刚建好有没有一个初始 commit——这直接决定后面能不能顺利关联本地已有的历史（见步骤 0）。
+
+**⑥ 远程已有空仓库，本地要怎么进去？**
+
+> 当时的理解：「从 GitHub 这个远程仓库点击 Fork 到自己的账号，然后克隆到本地进行开发。」
+
+实际：**fork 解决的问题是「你没有这个仓库的写权限」**。仓库是自己或团队建的、天生有写权限时，不需要 fork，直接 `git clone` 就够了。fork 只用在「给别人的开源项目提代码，但自己没有写权限」的场景。
+
+**⑦ `git init` 要在哪一步敲？**
+
+> 当时的理解：「不确定是要进 Claude Code 前敲还是 cd 打开文件夹就敲。」
+
+实际：`git init` 是纯终端操作，只在乎你当前站在哪个文件夹，跟用不用 AI 编程工具没有任何关系。
+
 ---
 
 ## 五、命令速查
 
 ```bash
+# ── 起手（项目从零到一，只做一次）──────
+git init                                                # 本地已有文件夹，远程还没建
+git branch -M main                                      # 对齐默认分支名
+git remote add origin <仓库网址>                         # 关联远程
+git push -u origin main                                 # 首次推送
+git clone <仓库网址>                                      # 远程已建好空仓库，一步到位
+gh repo create my-project --private --source=. --push   # gh CLI 一条命令搞定
+
 # ── 开工 ──────────────────────────────
 git checkout main               # 切回主线
 git pull                        # 拉最新历史
@@ -438,6 +537,10 @@ git branch -d feat/login        # 删本地分支
 | `upstream` | 上游 | fork 场景下对「原仓库」的习惯代号。定期 pull upstream 防止 fork 落后。 |
 | `checkout` | 检出 | 切换到某条分支，工作目录里的文件会整体替换成那条分支的样子。 |
 | `clone` | 克隆 | 第一次把云端仓库（含完整历史）复制到本地。 |
+| `init` | 初始化 | 让当前文件夹变成一个 Git 仓库，生成隐藏的 `.git` 目录，开始记录历史。纯本地操作。 |
+| `remote add` | 关联远程 | 在本地仓库里登记「某个代号（如 origin）对应哪个云端地址」，不传输任何文件。 |
+| `README` | 说明文件 | 仓库根目录下的一份特定文件（`README.md`），一个仓库通常只有一份，写给人看的说明书。会随项目迭代持续更新。 |
+| `.gitignore` | 忽略清单 | 告诉 Git 哪些文件/文件夹不纳入版本管理，需在第一次 commit 之前建好。 |
 | `rebase` | 变基 | 把你的 commit 摘下来重新接到别处。会改写 commit ID——只能对还没分享出去的分支做。 |
 | `squash` | 压缩合并 | 把 N 条零碎 commit 压成 1 条再进主线。最常见的 PR 合并策略。 |
 | `conflict` | 冲突 | 两边改了同一处、改法不同，Git 不替你猜，交人工裁决。是正常现象，不是错误。 |
